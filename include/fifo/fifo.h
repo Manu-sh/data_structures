@@ -2,8 +2,8 @@
     #error "You must define a TYPENAME es. const int* and a TYPEID int_ptr"
 #endif
 
-#include "../generics/gslinked_list/gfifo.h"
-#include "../generics/gslinked_list/gfifo.c"
+#include "../details/generics/gslinked_list/gfifo.h"
+#include "../details/generics/gslinked_list/gfifo.c"
 
 /* YOU CAN PLACE YOUR CUSTOM EXTRA FUNCTIONS HERE ex:
 

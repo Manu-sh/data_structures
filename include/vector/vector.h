@@ -5,8 +5,8 @@
     #error "You must define a TYPENAME es. const int* and a TYPEID int_ptr"
 #endif
 
-#include "../generics/gvector/gvector.h"
-#include "../generics/gvector/gvector.c"
+#include "../details/generics/gvector/gvector.h"
+#include "../details/generics/gvector/gvector.c"
 
 
 /* YOU CAN PLACE YOUR CUSTOM EXTRA FUNCTIONS HERE ex:

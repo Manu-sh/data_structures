@@ -7,8 +7,8 @@
     #error "You must define a TYPENAME es. const int* and a TYPEID int_ptr"
 #endif
 
-#include "../generics/gbinary_heap/gbinary_heap.h"
-#include "../generics/gbinary_heap/gbinary_heap.c"
+#include "../details/generics/gbinary_heap/gbinary_heap.h"
+#include "../details/generics/gbinary_heap/gbinary_heap.c"
 
 /* YOU CAN PLACE YOUR CUSTOM EXTRA FUNCTIONS HERE ex:
 
