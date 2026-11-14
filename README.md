@@ -1,5 +1,6 @@
 # data_structures
 A collection of generics data structures (WIP)
+this project is header only and replace the old [my_collections](https://github.com/Manu-sh/my_collections) which was more flexible because allow you to create a single object file for each "template" but also add unecessary pain to handle this edge case
 
 here is how you can include into a cmake project:
 
