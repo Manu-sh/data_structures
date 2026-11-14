@@ -6,5 +6,13 @@
 #include "../generics/gslinked_list/glifo.c"
 
 
+/* YOU CAN PLACE YOUR CUSTOM EXTRA FUNCTIONS HERE ex:
+
+   TYPENAME _(function_name)(const STRUCT *self) {
+        return self->some_detail;
+   }
+*/
+
+
 #undef TYPENAME
 #undef TYPEID
