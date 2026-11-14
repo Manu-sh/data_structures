@@ -14,7 +14,7 @@
     #include <immintrin.h>
 #endif
 
-#include "../common_c99/common-c99.h"
+#include "details/common_c99/common-c99.h"
 
 #if 0
     // ceil_div(x, 8) -> same of (int)ceil(x/8.)

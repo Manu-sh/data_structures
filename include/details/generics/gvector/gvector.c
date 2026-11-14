@@ -28,7 +28,7 @@ FORCED(inline) void _(assign)(STRUCT *vct, int at, const TYPENAME e) { vct->v[at
 FORCED(inline) bool _(resize)(STRUCT *vct, int len) {
 
 	TYPENAME *nv = (TYPENAME *)realloc(vct->v, len * sizeof(TYPENAME ));
-	if (!nv) return false;
+	if (UNLIKELY(!nv)) return false;
 
 	vct->v = nv;
 	vct->capacity = len;
@@ -39,7 +39,7 @@ FORCED(inline) bool _(resize)(STRUCT *vct, int len) {
 
 FORCED(inline) bool _(shrinkToFit)(STRUCT *vct) {
 	TYPENAME *nv = (TYPENAME *)realloc(vct->v, (vct->idx+1) * sizeof(TYPENAME ));
-	if (!nv) return false;
+	if (UNLIKELY(!nv)) return false;
     vct->v = nv;
     vct->capacity = vct->idx+1;
 	return true;
@@ -49,11 +49,11 @@ FORCED(inline) STRUCT * _(new)() {
 
 	STRUCT *vct;
 
-	if (!(vct = (STRUCT *)calloc(1, sizeof(STRUCT))))
+	if (UNLIKELY(!(vct = (STRUCT *)calloc(1, sizeof(STRUCT)))))
 		return NULL;
 
 	vct->capacity  = 10;
-	if (!(vct->v = (TYPENAME *)malloc(vct->capacity*sizeof(TYPENAME )))) {
+	if (UNLIKELY(!(vct->v = (TYPENAME *)malloc(vct->capacity*sizeof(TYPENAME ))))) {
 		free(vct);
 		return NULL;
 	}
@@ -72,7 +72,7 @@ FORCED(inline) bool _(pushBack)(STRUCT *vct, const TYPENAME e) {
 	/* doubling-halving: growUp */
 	if (vct->idx >= vct->capacity-1) {
 		TYPENAME *nv = (TYPENAME *)realloc(vct->v, (vct->capacity*2) * sizeof(TYPENAME ));
-		if (!nv) return false;
+		if (UNLIKELY(!nv)) return false;
 
 		vct->v = nv;
 		vct->capacity *= 2;
@@ -89,7 +89,7 @@ FORCED(inline) bool _(pushBackAll)(STRUCT *vct, const TYPENAME *v, int len) {
 	if (vct->idx+len >= vct->capacity) {
 
 		TYPENAME *nv = (TYPENAME *)realloc(vct->v, (vct->capacity+len) * sizeof(TYPENAME ));
-		if (!nv) return false;
+		if (UNLIKELY(!nv)) return false;
 
 		vct->v = nv;
 		vct->capacity += len;
@@ -110,7 +110,7 @@ FORCED(inline) TYPENAME _(popBack)(STRUCT *vct) {
 	/* doubling-halving: growDown */
 	if (vct->capacity/4 > vct->idx) {
 		TYPENAME *nv = (TYPENAME *)realloc(vct->v, (vct->capacity/2) * sizeof(TYPENAME ));
-		if (!nv) return ret; /* do nothing */
+		if (UNLIKELY(!nv)) return ret; /* do nothing */
 
 		vct->v = nv;
 		vct->capacity /= 2;

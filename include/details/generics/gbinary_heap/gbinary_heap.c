@@ -76,10 +76,10 @@ FORCED(inline) STRUCT * _(new)(bool (*lt)(TYPENAME,TYPENAME)) {
 
 	STRUCT *hp;
 
-	if (!(hp = (STRUCT *)malloc(1 * sizeof(STRUCT))))
+	if (UNLIKELY(!(hp = (STRUCT *)malloc(1 * sizeof(STRUCT)))))
 		return NULL;
 
-	if (!(hp->v = (TYPENAME *)malloc((hp->capacity = 10) * sizeof(TYPENAME )))) {
+	if (UNLIKELY(!(hp->v = (TYPENAME *)malloc((hp->capacity = 10) * sizeof(TYPENAME ))))) {
 		free(hp);
 		return NULL;
 	}
@@ -120,7 +120,7 @@ FORCED(inline) bool _(add)(STRUCT *hp, const TYPENAME e) {
 	/* doubling-halving: growUp */
 	if (hp->idx >= hp->capacity-1) {
 		TYPENAME *nv = (TYPENAME *)realloc(hp->v, (hp->capacity*2) * sizeof(TYPENAME ));
-		if (!nv) return false;
+		if (UNLIKELY(!nv)) return false;
 
 		hp->v = nv;
 		hp->capacity *= 2;
@@ -145,7 +145,7 @@ FORCED(inline) TYPENAME _(remove)(STRUCT *hp) {
 	/* doubling-halving: growDown */
 	if (hp->capacity/4 > hp->idx) {
 		TYPENAME *nv = (TYPENAME *)realloc(hp->v, (hp->capacity/2) * sizeof(TYPENAME ));
-		if (!nv) return ret; /* do nothing */
+		if (UNLIKELY(!nv)) return ret; /* do nothing */
 
 		hp->v = nv;
 		hp->capacity /= 2;

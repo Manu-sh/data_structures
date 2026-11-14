@@ -30,11 +30,11 @@ FORCED(inline) TYPENAME  _(top)(const STRUCT *ls)     { return ls->head->data;  
 FORCED(inline) STRUCT * _(new)() {
 
     STRUCT *ls;
-    if (!(ls = (STRUCT *)calloc(1, sizeof(STRUCT))))
+    if (UNLIKELY(!(ls = (STRUCT *)calloc(1, sizeof(STRUCT)))))
         return NULL;
 
     /* pre-allocation */
-    if (!(ls->head = (_(Node) *)calloc(1, sizeof(_(Node))))) {
+    if (UNLIKELY(!(ls->head = (_(Node) *)calloc(1, sizeof(_(Node)))))) {
         free(ls);
         return NULL;
     }
@@ -64,7 +64,7 @@ FORCED(inline) bool _(push)(STRUCT *ls, const TYPENAME e) {
     _(Node) *next;
 
     /* pre-allocation */
-    if (!(next = (_(Node) *)calloc(1, sizeof(_(Node)))))
+    if (UNLIKELY(!(next = (_(Node) *)calloc(1, sizeof(_(Node))))))
         return false;
 
     /* save into a previous preallocated block */

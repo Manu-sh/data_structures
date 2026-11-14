@@ -31,11 +31,11 @@ FORCED(inline) int      _(maxSize)()                 { return INT_MAX;         }
 FORCED(inline) STRUCT * _(new)() {
 
     STRUCT *ls;
-    if (!(ls = (STRUCT *)calloc(1, sizeof(STRUCT))))
+    if (UNLIKELY(!(ls = (STRUCT *)calloc(1, sizeof(STRUCT)))))
         return NULL;
 
     /* pre-allocation */
-    if (!(ls->head = (_(Node) *)calloc(1, sizeof(_(Node))))) {
+    if (UNLIKELY(!(ls->head = (_(Node) *)calloc(1, sizeof(_(Node)))))) {
         free(ls);
         return NULL;
     }
@@ -62,7 +62,7 @@ FORCED(inline) bool _(push)(STRUCT *ls, const TYPENAME e) {
     _(Node) *blk;
 
     /* pre-allocation */
-    if (!(blk = (_(Node) *)calloc(1, sizeof(_(Node)))))
+    if (UNLIKELY(!(blk = (_(Node) *)calloc(1, sizeof(_(Node))))))
         return false;
 
     /* save into a previous preallocated block */

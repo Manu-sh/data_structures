@@ -23,3 +23,6 @@
 #define _(_NAME_) TKPASTE(CLASSNAME, TKPASTE(UNDERSCORE, TYPEID, UNDERSCORE), _NAME_) /* _(popBack) -> vector_char_popBack */
 #define STRUCT    TKPASTE(CLASSNAME, UNDERSCORE, TYPEID) /* example: vector_char */
 typedef struct STRUCT STRUCT;
+
+#define LIKELY(_EXP_)       __builtin_expect((_EXP_), 1)
+#define UNLIKELY(_EXP_)     __builtin_expect((_EXP_), 0)

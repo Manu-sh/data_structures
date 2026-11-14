@@ -46,11 +46,11 @@ static vector_bit * vector_bit_new() {
 
     vector_bit *self;
 
-    if (!(self = (vector_bit *)calloc(1, sizeof(*self))))
+    if (UNLIKELY(!(self = (vector_bit *)calloc(1, sizeof(*self)))))
         return NULL;
 
     self->bit_capacity = VECTOR_BIT_DEFAULT_BIT_CAPACITY;
-    if (!(self->v = (uint8_t *)BLK_MALLOC( bytes_required(self->bit_capacity) ))) {
+    if (UNLIKELY(!(self->v = (uint8_t *)BLK_MALLOC( bytes_required(self->bit_capacity) )))) {
         free(self);
         return NULL;
     }
