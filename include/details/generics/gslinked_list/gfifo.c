@@ -21,11 +21,11 @@ struct STRUCT {
 (the pre-allocated block) (ls->back == ls->head == ls->tail)
 so a->back it's a valid blk */
 
-FORCED(inline) int       _(maxSize)()           { return INT_MAX; }
-FORCED(inline) TYPENAME  _(back)(const STRUCT *ls)    { return ls->back->data;  }
-FORCED(inline) int       _(length)(const STRUCT *ls)  { return ls->length;      }
-FORCED(inline) bool      _(isEmpty)(const STRUCT *ls) { return !ls->head->next; }
-FORCED(inline) TYPENAME  _(top)(const STRUCT *ls)     { return ls->head->data;  } /* there is always at least 1 blk */
+FORCED(inline) int       _(max_size)()                 { return INT_MAX; }
+FORCED(inline) TYPENAME  _(back)(const STRUCT *ls)     { return ls->back->data;  }
+FORCED(inline) int       _(length)(const STRUCT *ls)   { return ls->length;      }
+FORCED(inline) bool      _(is_empty)(const STRUCT *ls) { return !ls->head->next; }
+FORCED(inline) TYPENAME  _(top)(const STRUCT *ls)      { return ls->head->data;  } /* there is always at least 1 blk */
 
 FORCED(inline) STRUCT * _(new)() {
 

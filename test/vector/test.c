@@ -18,7 +18,7 @@ int main() {
 	assert(vector_char_length(vchar) == 0);
 	assert(vector_char_capacity(vchar) == 10);
 
-	vector_char_pushBackAll(vchar, "hello world", strlen("hello world"));
+	vector_char_push_back_all(vchar, "hello world", strlen("hello world"));
 
 	printf("%d\n", vector_char_length(vchar));
 	printf("%d\n", vector_char_capacity(vchar));
@@ -26,7 +26,7 @@ int main() {
 	assert(vector_char_length(vchar) == strlen("hello world"));
 	assert((unsigned)vector_char_capacity(vchar) > strlen("hello world"));
 
-	vector_char_pushBack(vchar, '\0');
+	vector_char_push_back(vchar, '\0');
 
 	assert(strcmp((void *)vector_char_data(vchar), "hello world") == 0);
 
@@ -34,8 +34,8 @@ int main() {
 
 	for (i = 'a'; i < 'z'; i++) {
 
-		vector_char_pushBack(vchar, i);
-		vector_int_pushBack(vint, i);
+		vector_char_push_back(vchar, i);
+		vector_int_push_back(vint, i);
 
 		printf("%c added\n", vector_char_back(vchar));
 		printf("%d added\n", vector_int_back(vint));

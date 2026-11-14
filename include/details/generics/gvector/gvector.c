@@ -15,9 +15,9 @@ struct STRUCT {
 #endif
 
 FORCED(inline) TYPENAME * _(data)(const STRUCT *vct) { return vct->v; }
-FORCED(inline) bool _(isEmpty)(const STRUCT *vct) { return vct->idx == 0; }
+FORCED(inline) bool _(is_empty)(const STRUCT *vct) { return vct->idx == 0; }
 FORCED(inline) int  _(length)(const STRUCT *vct)  { return vct->idx; }
-FORCED(inline) int  _(maxSize)() { return INT_MAX; }
+FORCED(inline) int  _(max_size)() { return INT_MAX; }
 FORCED(inline) void _(clear)(STRUCT *vct) { vct->idx = 0; }
 FORCED(inline) int  _(capacity)(const STRUCT *vct) { return vct->capacity; }
 
@@ -37,7 +37,7 @@ FORCED(inline) bool _(resize)(STRUCT *vct, int len) {
 	return true;
 }
 
-FORCED(inline) bool _(shrinkToFit)(STRUCT *vct) {
+FORCED(inline) bool _(shrink_to_fit)(STRUCT *vct) {
 	TYPENAME *nv = (TYPENAME *)realloc(vct->v, (vct->idx+1) * sizeof(TYPENAME ));
 	if (UNLIKELY(!nv)) return false;
     vct->v = nv;
@@ -67,7 +67,7 @@ FORCED(inline) void _(free)(STRUCT *vct) {
 	free(vct);
 }
 
-FORCED(inline) bool _(pushBack)(STRUCT *vct, const TYPENAME e) {
+FORCED(inline) bool _(push_back)(STRUCT *vct, const TYPENAME e) {
 
 	/* doubling-halving: growUp */
 	if (vct->idx >= vct->capacity-1) {
@@ -82,7 +82,7 @@ FORCED(inline) bool _(pushBack)(STRUCT *vct, const TYPENAME e) {
 	return true;
 }
 
-FORCED(inline) bool _(pushBackAll)(STRUCT *vct, const TYPENAME *v, int len) {
+FORCED(inline) bool _(push_back_all)(STRUCT *vct, const TYPENAME *v, int len) {
 
 	const TYPENAME *end = v+len;
 
@@ -103,7 +103,7 @@ FORCED(inline) bool _(pushBackAll)(STRUCT *vct, const TYPENAME *v, int len) {
 }
 
 /* it dosn't check if vector is empty so you MUST check it calling vector_isEmpty() */
-FORCED(inline) TYPENAME _(popBack)(STRUCT *vct) {
+FORCED(inline) TYPENAME _(pop_back)(STRUCT *vct) {
 
 	TYPENAME ret = vct->v[--vct->idx];
 

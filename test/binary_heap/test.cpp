@@ -52,7 +52,7 @@ jmp:
 
 	assert((int)pqueue.size() == pqueue_int_length(hp));
 
-	while (!pqueue_int_isEmpty(hp)) {
+	while (!pqueue_int_is_empty(hp)) {
 
 		int top[2];
 		top[0] = pqueue_int_peek(hp);
@@ -65,7 +65,7 @@ jmp:
 
 	}
 
-	assert( pqueue_int_isEmpty(hp) && pqueue.empty() );
+	assert( pqueue_int_is_empty(hp) && pqueue.empty() );
 	pqueue_int_free(hp);
 
 	printf("%s [OK]\n", max_heap ? "max heap" : "min heap");
@@ -106,7 +106,7 @@ void benchmark_c(const vector<int> &sample, bool max_heap) {
 		pqueue_int_peek(hp);
 	}
 
-	while (!pqueue_int_isEmpty(hp)) {
+	while (!pqueue_int_is_empty(hp)) {
 		pqueue_int_peek(hp);
 		pqueue_int_remove(hp);
 	}

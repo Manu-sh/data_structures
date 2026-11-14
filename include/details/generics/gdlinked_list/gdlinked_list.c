@@ -79,7 +79,7 @@ FORCED(inline) int  _(length)(const STRUCT *ls) {
 	return ls->length;
 }
 
-FORCED(inline) bool _(isEmpty)(const STRUCT *ls) {
+FORCED(inline) bool _(is_empty)(const STRUCT *ls) {
 	/* return ls->length == 0; */
 	return !ls->head->next; /* if there isn't another preallocated blk head point to tail and is itself the preallocated block */
 }
@@ -93,11 +93,11 @@ FORCED(inline) TYPENAME _(back)(const STRUCT *ls) {
 	return linkedlist_isEmpty(ls) ? NULL : ls->tail->prev->data;  /* prev could be NULL */
 #endif
 
-	assert(!_(isEmpty)(ls));
+	assert(!_(is_empty)(ls));
 	return ls->tail->prev->data;
 }
 
-FORCED(inline) bool _(pushBack)(STRUCT *ls, const TYPENAME e) {
+FORCED(inline) bool _(push_back)(STRUCT *ls, const TYPENAME e) {
 
 	_(Node) *next;
 
@@ -116,7 +116,7 @@ FORCED(inline) bool _(pushBack)(STRUCT *ls, const TYPENAME e) {
 	return true;
 }
 
-FORCED(inline) bool _(pushFront)(STRUCT *ls, const TYPENAME e) {
+FORCED(inline) bool _(push_front)(STRUCT *ls, const TYPENAME e) {
 
 	_(Node) *prev;
 
@@ -131,14 +131,14 @@ FORCED(inline) bool _(pushFront)(STRUCT *ls, const TYPENAME e) {
 	return true;
 }
 
-FORCED(inline) TYPENAME _(popBack)(STRUCT *ls) {
+FORCED(inline) TYPENAME _(pop_back)(STRUCT *ls) {
 
 	TYPENAME ret;
 	_(Node) *tofree;
 
 	/* check tail->prev (if tail == head list is empty and
 	   heap->prev->data result in an illegal access) */
-	assert( !_(isEmpty)(ls) );
+	assert( !_(is_empty)(ls) );
 
 	/* tail point to a pre-allocate block without data (always) */
 	tofree = ls->tail;
@@ -155,13 +155,13 @@ FORCED(inline) TYPENAME _(popBack)(STRUCT *ls) {
 	return ret;
 }
 
-FORCED(inline) TYPENAME _(popFront)(STRUCT *ls) {
+FORCED(inline) TYPENAME _(pop_front)(STRUCT *ls) {
 
 	/* there is always at least one block */
 	TYPENAME ret = ls->head->data;
 	_(Node) *tofree = ls->head;
 
-	assert(!_(isEmpty)(ls)); /* unecessay */
+	assert(!_(is_empty)(ls)); /* unecessay */
 
 	if (!ls->head->next) { /* don't free nothing if is the last blk */
 		/* ls->head->data = -1; */

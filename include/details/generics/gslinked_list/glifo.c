@@ -22,11 +22,11 @@ struct STRUCT {
 so a->front it's a valid blk */
 
 /* TODO test */
-FORCED(inline) TYPENAME _(top)(const STRUCT *ls)     { return ls->head->next->data; }
-FORCED(inline) TYPENAME _(back)(const STRUCT *ls)    { return ls->tail->data;  } /* there is always at least 1 blk */
-FORCED(inline) int      _(length)(const STRUCT *ls)  { return ls->length;      }
-FORCED(inline) bool     _(isEmpty)(const STRUCT *ls) { return !ls->head->next; }
-FORCED(inline) int      _(maxSize)()                 { return INT_MAX;         }
+FORCED(inline) TYPENAME _(top)(const STRUCT *ls)      { return ls->head->next->data; }
+FORCED(inline) TYPENAME _(back)(const STRUCT *ls)     { return ls->tail->data;  } /* there is always at least 1 blk */
+FORCED(inline) int      _(length)(const STRUCT *ls)   { return ls->length;      }
+FORCED(inline) bool     _(is_empty)(const STRUCT *ls) { return !ls->head->next; }
+FORCED(inline) int      _(max_size)()                 { return INT_MAX;         }
 
 FORCED(inline) STRUCT * _(new)() {
 
@@ -83,7 +83,7 @@ FORCED(inline) TYPENAME _(pop)(STRUCT *ls) {
     _(Node) *tofree;
 
     /* there is always at least one block */
-    assert(!_(isEmpty)(ls));
+    assert(!_(is_empty)(ls));
     ret = ls->head->next->data;
     tofree = ls->head;
 

@@ -33,7 +33,7 @@ int main() {
 
 	printf("length: %d\n", pqueue_int_length(hp));
 
-	while (!pqueue_int_isEmpty(hp))
+	while (!pqueue_int_is_empty(hp))
 		printf("%d\n", pqueue_int_remove(hp));
 
 	pqueue_int_free(hp);

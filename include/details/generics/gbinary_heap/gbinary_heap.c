@@ -65,7 +65,7 @@ __helper void _(fixDown)(TYPENAME *v, bool (*lt)(TYPENAME,TYPENAME), int p, int 
 
 
 /* INT_MAX-1 because heap start at 1 */
-FORCED(inline)	int _(maxSize)() {
+FORCED(inline)	int _(max_size)() {
 	return INT_MAX-1;
 }
 
@@ -97,14 +97,14 @@ FORCED(inline) void _(free)(STRUCT *hp) {
 }
 
 
-FORCED(inline) bool _(isEmpty)(const STRUCT *hp) {
+FORCED(inline) bool _(is_empty)(const STRUCT *hp) {
 	return hp->idx == 0;
 }
 
 
 /* retrieve but not remove the root */
 FORCED(inline) TYPENAME  _(peek)(const STRUCT *hp) {
-	assert(!_(isEmpty)(hp));
+	assert(!_(is_empty)(hp));
 	return hp->v[1];
 }
 
@@ -164,7 +164,7 @@ not twice, and appropriate for fixed-size heaps. */
 FORCED(inline) TYPENAME _(replace)(STRUCT *hp, const TYPENAME e) {
 
 	TYPENAME  ret = (TYPENAME )e;
-	assert(!_(isEmpty)(hp));
+	assert(!_(is_empty)(hp));
 
 	SWAP(TYPENAME, ret, hp->v[1]);
 	_(fixDown)(hp->v, hp->lt, 1, hp->idx-1);

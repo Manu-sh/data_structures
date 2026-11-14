@@ -11,20 +11,20 @@ int main() {
 	int ch;
 
 	for (i = 'a'; i <= 'z'; i++) {
-		dequeue_char_pushBack(v, i);
+		dequeue_char_push_back(v, i);
 		printf("%c added\n", dequeue_char_back(v));
 	}
 
 	for (ch = '9'; ch >= '0'; ch--) {
-		dequeue_char_pushFront(v, ch);
+		dequeue_char_push_front(v, ch);
 		printf("-> %c added\n", dequeue_char_front(v));
 	}
 
 
 	puts("\nextract all elements from the top:\n");
 
-	while (!dequeue_char_isEmpty(v)) {
-	    printf("-> %c popFront\n", dequeue_char_popFront(v));
+	while (!dequeue_char_is_empty(v)) {
+	    printf("-> %c popFront\n", dequeue_char_pop_front(v));
 	}
 
 

@@ -33,7 +33,7 @@ void check_correctness(const vector<int> &sample) {
 
 	for (auto s : sample) {
 
-		vector_int_pushBack(vct, s);
+		vector_int_push_back(vct, s);
 		pvct.push_back(s);
 
 		int top[2];
@@ -46,7 +46,7 @@ void check_correctness(const vector<int> &sample) {
 
 	assert((int)pvct.size() == vector_int_length(vct));
 
-	while (!vector_int_isEmpty(vct)) {
+	while (!vector_int_is_empty(vct)) {
 
 		int top[2];
 		top[0] = vector_int_back(vct);
@@ -54,11 +54,11 @@ void check_correctness(const vector<int> &sample) {
 
 		assert(top[0] == top[1]);
 
-		(void)vector_int_popBack(vct);
+		(void)vector_int_pop_back(vct);
 		pvct.pop_back();
 	}
 
-	assert( vector_int_isEmpty(vct) && pvct.empty() );
+	assert( vector_int_is_empty(vct) && pvct.empty() );
 	vector_int_free(vct);
 }
 
@@ -85,15 +85,15 @@ void benchmark_c(const vector<int> &sample) {
 	vector_int *vct = vector_int_new();
 
 	for (auto s : sample) {
-		(void)vector_int_pushBack(vct, s);
+		(void)vector_int_push_back(vct, s);
 		(void)vector_int_back(vct);
 	}
 
 	cout << "vct: " << vector_int_capacity(vct) << '\n';
 
-	while (!vector_int_isEmpty(vct)) {
+	while (!vector_int_is_empty(vct)) {
 		(void)vector_int_back(vct);
-		(void)vector_int_popBack(vct);
+		(void)vector_int_pop_back(vct);
 	}
 
 	vector_int_free(vct);

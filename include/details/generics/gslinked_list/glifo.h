@@ -7,8 +7,8 @@ void     _(free)(STRUCT *ls);
 TYPENAME _(top)(const STRUCT *ls);
 TYPENAME _(back)(const STRUCT *ls);
 int      _(length)(const STRUCT *ls);
-bool     _(isEmpty)(const STRUCT *ls);
-int      _(maxSize)();
+bool     _(is_empty)(const STRUCT *ls);
+int      _(max_size)();
 
 bool     _(push)(STRUCT *ls, const TYPENAME e);
 
