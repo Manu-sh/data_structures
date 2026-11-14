@@ -5,15 +5,15 @@
 #include <stdlib.h>
 #include <assert.h>
 
-typedef struct node {
-	struct node *next;
-	struct node *prev;
+typedef struct _(node) {
+	struct _(node) *next;
+	struct _(node) *prev;
 	TYPENAME data;
-} Node;
+} _(Node);
 
 struct STRUCT {
-	Node *head;
-	Node *tail; /* point to a preallocated block without data */
+	_(Node) *head;
+	_(Node) *tail; /* point to a preallocated block without data */
 	int length; /* for obvious reasons the tail isn't count as part of length */
 };
 
@@ -52,7 +52,7 @@ FORCED(inline) STRUCT * _(new()) {
 		return NULL;
 
 	/* pre-allocation */
-	if (!(ls->head = (Node *)calloc(1, sizeof(Node)))) {
+	if (!(ls->head = (_(Node) *)calloc(1, sizeof(_(Node))))) {
 		free(ls);
 		return NULL;
 	}
@@ -63,7 +63,7 @@ FORCED(inline) STRUCT * _(new()) {
 
 FORCED(inline) void _(free)(STRUCT *ls) {
 
-	Node *p;
+	_(Node) *p;
 
 	if (!ls) return;
 
@@ -99,10 +99,10 @@ FORCED(inline) TYPENAME _(back)(const STRUCT *ls) {
 
 FORCED(inline) bool _(pushBack)(STRUCT *ls, const TYPENAME e) {
 
-	Node *next;
+	_(Node) *next;
 
 	/* pre-allocation */
-	if (!(next = (Node *)calloc(1, sizeof(Node))))
+	if (!(next = (_(Node) *)calloc(1, sizeof(_(Node)))))
 		return false;
 
 	/* save into a previous preallocated block */
@@ -118,9 +118,9 @@ FORCED(inline) bool _(pushBack)(STRUCT *ls, const TYPENAME e) {
 
 FORCED(inline) bool _(pushFront)(STRUCT *ls, const TYPENAME e) {
 
-	Node *prev;
+	_(Node) *prev;
 
-	if (!(prev = (Node *)calloc(1, sizeof(Node))))
+	if (!(prev = (_(Node) *)calloc(1, sizeof(_(Node)))))
 		return false;
 
 	prev->data = (TYPENAME)e;
@@ -134,7 +134,7 @@ FORCED(inline) bool _(pushFront)(STRUCT *ls, const TYPENAME e) {
 FORCED(inline) TYPENAME _(popBack)(STRUCT *ls) {
 
 	TYPENAME ret;
-	Node *tofree;
+	_(Node) *tofree;
 
 	/* check tail->prev (if tail == head list is empty and
 	   heap->prev->data result in an illegal access) */
@@ -142,7 +142,7 @@ FORCED(inline) TYPENAME _(popBack)(STRUCT *ls) {
 
 	/* tail point to a pre-allocate block without data (always) */
 	tofree = ls->tail;
-    	ret    = ls->tail->prev->data;
+    ret    = ls->tail->prev->data;
 
 	ls->tail->prev->next = NULL;
 	/* ls->tail->prev->data = NULL; */
@@ -159,7 +159,7 @@ FORCED(inline) TYPENAME _(popFront)(STRUCT *ls) {
 
 	/* there is always at least one block */
 	TYPENAME ret = ls->head->data;
-	Node *tofree = ls->head;
+	_(Node) *tofree = ls->head;
 
 	assert(!_(isEmpty)(ls)); /* unecessay */
 
@@ -183,10 +183,9 @@ you can pass null safely to this function */
 
 FORCED(inline) STRUCT * _(merge)(STRUCT *a, STRUCT **b) {
 
-	Node *n;
+	_(Node) *n;
 
-	if (!a || !b || !*b)
-		return NULL;
+	if (!a || !b || !*b) return NULL;
 
 	/* in the worst case tail point to head (that is the pre-allocated block) */
 	n = a->tail;
