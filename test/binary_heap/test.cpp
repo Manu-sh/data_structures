@@ -34,39 +34,39 @@ jmp:
 	bool (*lt)(int,int) = max_heap ? [] (int a, int b) { return a < b; } : [] (int a, int b) { return b > a; };
 
 	priority_queue<int, vector<int>, decltype(lt)> pqueue(lt);
-	priority_queue_int *hp = priority_queue_int_new(lt);
+	pqueue_int *hp = pqueue_int_new(lt);
 	assert(hp);
 
 	for (auto s : sample) {
 
-		priority_queue_int_add(hp, s);
+		pqueue_int_add(hp, s);
 		pqueue.push(s);
 
 		int top[2];
-		top[0] = priority_queue_int_peek(hp);
+		top[0] = pqueue_int_peek(hp);
 		top[1] = pqueue.top();
 
 		assert(top[0] == top[1]);
 	}
 
 
-	assert((int)pqueue.size() == priority_queue_int_length(hp));
+	assert((int)pqueue.size() == pqueue_int_length(hp));
 
-	while (!priority_queue_int_isEmpty(hp)) {
+	while (!pqueue_int_isEmpty(hp)) {
 
 		int top[2];
-		top[0] = priority_queue_int_peek(hp);
+		top[0] = pqueue_int_peek(hp);
 		top[1] = pqueue.top();
 
 		assert(top[0] == top[1]);
 
-		(void)priority_queue_int_remove(hp);
+		(void)pqueue_int_remove(hp);
 		pqueue.pop();
 
 	}
 
-	assert( priority_queue_int_isEmpty(hp) && pqueue.empty() );
-	priority_queue_int_free(hp);
+	assert( pqueue_int_isEmpty(hp) && pqueue.empty() );
+	pqueue_int_free(hp);
 
 	printf("%s [OK]\n", max_heap ? "max heap" : "min heap");
 
@@ -99,19 +99,19 @@ void benchmark_cpp(const vector<int> &sample, bool max_heap) {
 void benchmark_c(const vector<int> &sample, bool max_heap) {
 
 	bool (*lt)(int,int) = max_heap ? [] (int a, int b) { return a < b; } : [] (int a, int b) { return b > a; };
-	priority_queue_int *hp = priority_queue_int_new(lt);
+	pqueue_int *hp = pqueue_int_new(lt);
 
 	for (auto s : sample) {
-		priority_queue_int_add(hp, s);
-		priority_queue_int_peek(hp);
+		pqueue_int_add(hp, s);
+		pqueue_int_peek(hp);
 	}
 
-	while (!priority_queue_int_isEmpty(hp)) {
-		priority_queue_int_peek(hp);
-		priority_queue_int_remove(hp);
+	while (!pqueue_int_isEmpty(hp)) {
+		pqueue_int_peek(hp);
+		pqueue_int_remove(hp);
 	}
 
-	priority_queue_int_free(hp);
+	pqueue_int_free(hp);
 
 }
 

@@ -17,26 +17,26 @@ bool lt(int a, int b)
 
 int main() {
 
-	priority_queue_int *hp;
-	priority_queue_char *hpc;
+	pqueue_int *hp;
+	pqueue_char *hpc;
 	int i;
 
 	srand(time(0));
-	hp = priority_queue_int_new(lt);
-	hpc = priority_queue_char_new(NULL); /* TODO */
+	hp = pqueue_int_new(lt);
+	hpc = pqueue_char_new(NULL); /* TODO */
 
 	assert(hp);
 
 
 	for (i = 0; i < 100; i++)
-		priority_queue_int_add(hp, rand());
+		pqueue_int_add(hp, rand());
 
-	printf("length: %d\n", priority_queue_int_length(hp));
+	printf("length: %d\n", pqueue_int_length(hp));
 
-	while (!priority_queue_int_isEmpty(hp))
-		printf("%d\n", priority_queue_int_remove(hp));
+	while (!pqueue_int_isEmpty(hp))
+		printf("%d\n", pqueue_int_remove(hp));
 
-	priority_queue_int_free(hp);
-	priority_queue_char_free(hpc); /* TODO */
+	pqueue_int_free(hp);
+	pqueue_char_free(hpc); /* TODO */
 	return 0;
 }

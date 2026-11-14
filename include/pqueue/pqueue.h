@@ -1,5 +1,5 @@
 #undef  CLASSNAME
-#define CLASSNAME priority_queue
+#define CLASSNAME pqueue
 
 #if !defined(TYPENAME) || !defined(TYPEID)
     // #define TYPENAME const huffman_node_t *
