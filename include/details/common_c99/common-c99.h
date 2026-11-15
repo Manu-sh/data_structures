@@ -33,9 +33,9 @@
 
 
 #ifndef LIKELY
-    #define LIKELY(_EXP_)       __builtin_expect(_EXP_, 1)
+    #define LIKELY(_EXP_)       __builtin_expect((_EXP_), 1)
 #endif
 
 #ifndef UNLIKELY
-    #define UNLIKELY(_EXP_)     __builtin_expect(_EXP_, 0)
+    #define UNLIKELY(_EXP_)     __builtin_expect((_EXP_), 0)
 #endif
