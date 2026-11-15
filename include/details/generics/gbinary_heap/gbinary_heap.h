@@ -4,7 +4,7 @@
 
 #include "../ccommon.h"
 
-int _(maxSize)();
+int _(max_size)();
 
 /* get a new heap ctx back */
 STRUCT * _(new)(bool (*lt)(TYPENAME,TYPENAME));
@@ -13,7 +13,7 @@ STRUCT * _(new)(bool (*lt)(TYPENAME,TYPENAME));
 void _(free)(STRUCT *hp);
 
 /* true if there are no elements */
-bool _(isEmpty)(const STRUCT *hp);
+bool _(is_empty)(const STRUCT *hp);
 
 /* retrieve but not remove the root */
 TYPENAME _(peek)(const STRUCT *hp);
