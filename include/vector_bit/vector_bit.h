@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <stdio.h>
 
 #ifdef __cplusplus
@@ -393,6 +394,19 @@ static vector_bit * vector_bit_make_from_mem(const uint8_t *src, uint64_t bit_le
     return LIKELY((uintptr_t)vector_bit_push_all(self, src, bit_length)) ? self : (vector_bit_free(self), (vector_bit *)NULL);
 }
 
+
+// return NULL in case of failure otherwise a pointer to dst containing the bit string as ascii string null terminated
+static char * vector_bit_to_cstr(const vector_bit *self, char *dst, uin64_t len) {
+
+    uint64_t blen = vector_bit_length(self);
+    if (blen >= len) // '\0' is required, the size of dst must be at least blen+1
+        return NULL;
+
+    for (uint64_t i = 0; i < len; ++i)
+        dst[i] = '0' + vector_bit_access(self, i);
+
+    return dst[blen] = '\0', dst
+}
 
 #ifdef __cplusplus
 }
