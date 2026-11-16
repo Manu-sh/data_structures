@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cstddef>
+
 #include <stdio.h>
 
 #ifdef __cplusplus
@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <cassert>
+#include <cstddef>
 #define restrict // suppress any error since cpp doesn't have this keyword
 extern "C" {
     #include <stdbool.h> // cstdbool is deprecated in cpp17 and removed in cpp20
@@ -18,6 +19,7 @@ extern "C" {
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <stddef.h>
 #include <immintrin.h>
 #endif
 
@@ -396,7 +398,7 @@ static vector_bit * vector_bit_make_from_mem(const uint8_t *src, uint64_t bit_le
 
 
 // return NULL in case of failure otherwise a pointer to dst containing the bit string as ascii string null terminated
-static char * vector_bit_to_cstr(const vector_bit *self, char *dst, uin64_t len) {
+static char * vector_bit_to_cstr(const vector_bit *self, char *dst, uint64_t len) {
 
     uint64_t blen = vector_bit_length(self);
     if (blen >= len) // '\0' is required, the size of dst must be at least blen+1
@@ -405,7 +407,7 @@ static char * vector_bit_to_cstr(const vector_bit *self, char *dst, uin64_t len)
     for (uint64_t i = 0; i < len; ++i)
         dst[i] = '0' + vector_bit_access(self, i);
 
-    return dst[blen] = '\0', dst
+    return dst[blen] = '\0', dst;
 }
 
 #ifdef __cplusplus

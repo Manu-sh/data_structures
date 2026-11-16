@@ -290,6 +290,7 @@ void test_make_from_cstr() {
     for (size_t len = vector_bit_length(vb), i = 0; i < len; ++i)
         REQUIRE(vector_bit_access(vb, i) == !!(bits[i] - '0'));
 
+    vector_bit_free(vb);
 }
 
 void test_concat() {
@@ -396,12 +397,11 @@ void test_concat() {
         REQUIRE(vector_bit_cat(z, a));
         REQUIRE(vector_bit_equal(z, a));
 
-
-        // TODO: ok let's leave some memory leak here it's just a test, vector_bit_make_from_cstr() should be vector_bit_free()
-        REQUIRE(vector_bit_equal(vector_bit_cat(z, b), vector_bit_make_from_cstr("010000")));
-        REQUIRE(vector_bit_equal(vector_bit_cat(z, c), vector_bit_make_from_cstr("010000100")));
-        REQUIRE(vector_bit_equal(vector_bit_cat(z, d), vector_bit_make_from_cstr("010000100111")));
-        REQUIRE(vector_bit_equal(vector_bit_cat(z, e), vector_bit_make_from_cstr("010000100111001")));
+        void *asan_shutup;
+        REQUIRE(vector_bit_equal(vector_bit_cat(z, b), asan_shutup = vector_bit_make_from_cstr("010000"))); vector_bit_free(asan_shutup);
+        REQUIRE(vector_bit_equal(vector_bit_cat(z, c), asan_shutup = vector_bit_make_from_cstr("010000100"))); vector_bit_free(asan_shutup);
+        REQUIRE(vector_bit_equal(vector_bit_cat(z, d), asan_shutup = vector_bit_make_from_cstr("010000100111"))); vector_bit_free(asan_shutup);
+        REQUIRE(vector_bit_equal(vector_bit_cat(z, e), asan_shutup = vector_bit_make_from_cstr("010000100111001"))); vector_bit_free(asan_shutup);
 
 
         vector_bit_free(a);
@@ -712,6 +712,32 @@ void test_swap() {
 }
 
 
+void test_to_cstr() {
+
+    {
+        const char *src = "0101001010";
+        char dst[strlen(src) + 1];
+
+        vector_bit *vbit = vector_bit_make_from_cstr(src);
+        vector_bit_to_cstr(vbit, dst, sizeof dst);
+
+        REQUIRE(strcmp(src, dst) == 0);
+        vector_bit_free(vbit);
+    }
+
+    {
+        const char *src = "011101010";
+        char dst[strlen(src) + 1];
+
+        vector_bit *vbit = vector_bit_make_from_cstr(src);
+        vector_bit_to_cstr(vbit, dst, sizeof dst);
+
+        REQUIRE(strcmp(src, dst) == 0);
+        vector_bit_free(vbit);
+    }
+
+}
+
 
 int main() {
 
@@ -726,6 +752,7 @@ int main() {
     test_qr_code();
     test_mov();
     test_swap();
+    test_to_cstr();
 
     vector_bit *vct = vector_bit_new();
     for (int i = 0; i < 145; ++i) {

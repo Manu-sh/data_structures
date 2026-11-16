@@ -7,8 +7,9 @@ CXXFLAGS += -I ../../include/
 .PHONY: all clean
 
 all:
-	#$(CC) $(CFLAGS) -o test test.c
-	$(CXX) $(CXXFLAGS) -o test test.c
+	$(CC) $(CFLAGS) -o test test.c
+
+	#$(CXX) $(CXXFLAGS) -o test test.c
 
 build_benchmark:
 	$(CC) -I ../../include/ -std=c99 -Ofast -ffast-math -funroll-loops -march=native -mtune=native -funswitch-loops -ftree-vectorize -fivopts -fmodulo-sched -flto -pipe -Wall -Wextra -Wno-unused-function -pedantic -fno-builtin-memcpy benchmark.c -o benchmark -g3 # -DDEBUG
