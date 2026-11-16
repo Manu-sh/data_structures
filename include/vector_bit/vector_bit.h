@@ -400,11 +400,10 @@ static vector_bit * vector_bit_make_from_mem(const uint8_t *src, uint64_t bit_le
 // return NULL in case of failure otherwise a pointer to dst containing the bit string as ascii string null terminated
 static char * vector_bit_to_cstr(const vector_bit *self, char *dst, uint64_t len) {
 
-    uint64_t blen = vector_bit_length(self);
-    if (blen >= len) // '\0' is required, the size of dst must be at least blen+1
-        return NULL;
+    const uint64_t blen = vector_bit_length(self);
+    if (blen >= len) return NULL; // '\0' is required, the size of dst must be at least blen+1
 
-    for (uint64_t i = 0; i < len; ++i)
+    for (uint64_t i = 0; i < blen; ++i)
         dst[i] = '0' + vector_bit_access(self, i);
 
     return dst[blen] = '\0', dst;
