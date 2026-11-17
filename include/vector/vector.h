@@ -6,7 +6,6 @@
 #endif
 
 #include "../details/generics/gvector/gvector.h"
-#include "../details/generics/gvector/gvector.c"
 
 
 /* YOU CAN PLACE YOUR CUSTOM EXTRA FUNCTIONS HERE ex:

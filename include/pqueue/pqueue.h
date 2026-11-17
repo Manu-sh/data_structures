@@ -6,7 +6,6 @@
 #endif
 
 #include "../details/generics/gbinary_heap/gbinary_heap.h"
-#include "../details/generics/gbinary_heap/gbinary_heap.c"
 
 /* YOU CAN PLACE YOUR CUSTOM EXTRA FUNCTIONS HERE ex:
 
@@ -14,7 +13,6 @@
         return self->some_detail;
    }
 */
-
 
 #undef TYPENAME
 #undef TYPEID

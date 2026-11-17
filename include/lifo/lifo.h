@@ -3,7 +3,6 @@
 #endif
 
 #include "../details/generics/gslinked_list/glifo.h"
-#include "../details/generics/gslinked_list/glifo.c"
 
 
 /* YOU CAN PLACE YOUR CUSTOM EXTRA FUNCTIONS HERE ex:
