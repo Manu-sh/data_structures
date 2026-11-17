@@ -32,7 +32,9 @@ typedef struct {
     uint8_t *v;
 } vector_bit;
 
-#define VECTOR_BIT_DEFAULT_BIT_CAPACITY 8
+#ifndef VECTOR_BIT_DEFAULT_BIT_CAPACITY
+    #define VECTOR_BIT_DEFAULT_BIT_CAPACITY 8
+#endif
 
 #if 1
     #define BLK_MALLOC(_SZ_) (malloc(_SZ_))
@@ -412,3 +414,6 @@ static char * vector_bit_to_cstr(const vector_bit *self, char *dst, uint64_t len
 #ifdef __cplusplus
 }
 #endif
+
+
+#undef VECTOR_BIT_DEFAULT_BIT_CAPACITY
