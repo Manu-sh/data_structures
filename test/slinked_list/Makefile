@@ -1,19 +1,18 @@
-# CC=tcc
-#CFLAGS=-std=c89 -Ofast -pipe -ffast-math -Wall -Wextra -D_REENTRANT -Wno-unused-function -fstack-protector-all -fstack-protector-strong -funroll-loops -pedantic -Werror
-#CFLAGS += -I ../../include/
+ASAN_FLAGS=-fsanitize=address,undefined,null,alignment,leak,pointer-compare,pointer-subtract,unreachable
 
-CXXFLAGS=-std=c++11 -Ofast -pipe -ffast-math -Wall -Wextra -D_REENTRANT -Wno-unused-function -fstack-protector-all -fstack-protector-strong -funroll-loops -pedantic -Werror
+CXXFLAGS=-std=c++14 -O0 -pipe -Wall -Wextra -Werror -D_REENTRANT -Wno-unused-function -pedantic -fstack-protector-all -fstack-protector-strong -fno-builtin-memcpy -g3 -fno-omit-frame-pointer -ftrapv #-fno-strict-aliasing
 CXXFLAGS += -I ../../include/
 
-.PHONY: all clean test
+VALGRIND= valgrind --undef-value-errors=no --tool=memcheck --leak-check=full --show-reachable=yes --num-callers=20 --track-fds=yes -s
 
-test:
-	# $(CC) $(CFLAGS) -o test_c test.c
+.PHONY: all clean
+
+all:
 	$(CXX) $(CXXFLAGS) -o test_cpp test.cpp
-	./test_cpp
+	$(CXX) $(CXXFLAGS) $(ASAN_FLAGS) -o test_cpp_asan test.cpp
 
-%.o: %.c %.h
-	$(CC) $(CFLAGS) -c $< -o $@
+	./test_cpp_asan
+	$(VALGRIND) ./test_cpp
 
 clean:
-	rm -f *.o test_cpp test_c
+	rm -f test_cpp test_cpp_asan

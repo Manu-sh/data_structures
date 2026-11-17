@@ -1,30 +1,29 @@
 #CC=gcc
 #CC=tcc
-CFLAGS=-std=c89 -Ofast -pipe -ffast-math -Wall -Wextra -D_REENTRANT -Wno-unused-function -fstack-protector-all -fstack-protector-strong -funroll-loops -pedantic -Werror
+#
+ASAN_FLAGS=-fsanitize=address,undefined,null,alignment,leak,pointer-compare,pointer-subtract,unreachable
+
+CFLAGS=-std=c89 -O0 -pipe -Wall -Wextra -Werror -D_REENTRANT -Wno-unused-function -pedantic -fstack-protector-all -fstack-protector-strong -fno-builtin-memcpy -g3 -fno-omit-frame-pointer -ftrapv #-fno-strict-aliasing
 CFLAGS += -I ../../include/
 
-#CXXFLAGS=-Ofast -pipe -ffast-math -Wall -Wextra -D_REENTRANT -Wno-unused-function -fstack-protector-all -fstack-protector-strong -funroll-loops -pedantic -Werror -march=native -mtune=native -funswitch-loops -ftree-vectorize -fivopts -fmodulo-sched -flto
-
-# since std::vector function are templates and im compiling .o object the inline of cpp is unfair my function cant be inlined if i link as .o
-CXXFLAGS=-std=c++14 -fno-inline -Ofast -pipe -ffast-math -Wall -Wextra -D_REENTRANT -Wno-unused-function -fstack-protector-all -fstack-protector-strong -funroll-loops -pedantic -Werror -march=native -mtune=native -funswitch-loops -ftree-vectorize -fivopts -fmodulo-sched
+CXXFLAGS=-std=c++14 -O0 -pipe -Wall -Wextra -Werror -D_REENTRANT -Wno-unused-function -pedantic -fstack-protector-all -fstack-protector-strong -fno-builtin-memcpy -g3 -fno-omit-frame-pointer -ftrapv #-fno-strict-aliasing
 CXXFLAGS += -I ../../include/
 
-#CXXFLAGS=-O0 -g -fno-inline
+VALGRIND= valgrind --undef-value-errors=no --tool=memcheck --leak-check=full --show-reachable=yes --num-callers=20 --track-fds=yes -s
+
 .PHONY: all clean test
 
 all:
 	$(CC) $(CFLAGS) -o test_c test.c
+	$(CC) $(CFLAGS) $(ASAN_FLAGS) -o test_c_asan test.c
+
 	$(CXX) $(CXXFLAGS) -o test_cpp test.cpp
-	./test_c
-	./test_cpp
+	$(CXX) $(CXXFLAGS) $(ASAN_FLAGS) -o test_cpp_asan test.cpp
 
-%.o: %.c %.h
-	$(CC) $(CFLAGS) -c $< -o $@
-
-test: all
-	./test_c
-	./test_cpp
-	./single_blob
+	./test_c_asan
+	./test_cpp_asan
+	$(VALGRIND) ./test_c
+	$(VALGRIND) ./test_cpp
 
 clean:
-	rm -f *.o test single_blob test_c test_cpp
+	rm -f test_c test_cpp test_c_asan test_cpp_asan
