@@ -6,6 +6,7 @@
 #endif
 
 #include "../details/generics/gdlinked_list/gdlinked_list.h"
+#include "../details/generics/gdlinked_list/gdlinked_list.c"
 
 /* YOU CAN PLACE YOUR CUSTOM EXTRA FUNCTIONS HERE ex:
 
