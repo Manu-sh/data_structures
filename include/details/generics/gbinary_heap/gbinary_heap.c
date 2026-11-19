@@ -128,7 +128,7 @@ FORCED(inline) bool _(add)(STRUCT *hp, const TYPENAME e) {
 		hp->capacity *= 2;
 	}
 
-	hp->v[++hp->idx] = (TYPENAME )e;
+	hp->v[++hp->idx] = CAST_PTR(TYPENAME, e);
 	_(fixUp)(hp->v, hp->lt, hp->idx);
 
 	return true;
@@ -165,7 +165,7 @@ not twice, and appropriate for fixed-size heaps. */
 
 FORCED(inline) TYPENAME _(replace)(STRUCT *hp, const TYPENAME e) {
 
-	TYPENAME  ret = (TYPENAME )e;
+	TYPENAME  ret = CAST_PTR(TYPENAME, e);
 	assert(!_(is_empty)(hp));
 
 	SWAP(TYPENAME, ret, hp->v[1]);

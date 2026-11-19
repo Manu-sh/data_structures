@@ -69,7 +69,7 @@ FORCED(inline) bool _(push)(STRUCT *ls, const TYPENAME e) {
         return false;
 
     /* save into a previous preallocated block */
-    ls->tail->data = (TYPENAME)e;
+    ls->tail->data = CAST_PTR(TYPENAME, e);
     ls->tail->next = next; /* NODE_PUSH_BACK() */
 
     /* tail must point to a preallocated block without data */

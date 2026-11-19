@@ -34,3 +34,10 @@
 		A = B;            \
 		B = _tmp_;        \
 	} while(0)
+
+
+/*
+    workaround the issue: "ISO C forbids casting nonscalar to the same type"
+    be careful, this also strip the const qualifier away
+*/
+#define CAST_PTR(_TYPENAME_, lvalue)   (*(_TYPENAME_ *)(void *)&(lvalue))

@@ -107,7 +107,7 @@ FORCED(inline) bool _(push_back)(STRUCT *ls, const TYPENAME e) {
 		return false;
 
 	/* save into a previous preallocated block */
-	ls->tail->data = (TYPENAME)e;
+	ls->tail->data = CAST_PTR(TYPENAME, e);
 	NODE_PUSH_BACK(ls->tail, next);
 
 	/* tail must point to a preallocated block without data */
@@ -124,7 +124,7 @@ FORCED(inline) bool _(push_front)(STRUCT *ls, const TYPENAME e) {
 	if (UNLIKELY(!(prev = (_(Node) *)calloc(1, sizeof(_(Node))))))
 		return false;
 
-	prev->data = (TYPENAME)e;
+	prev->data = CAST_PTR(TYPENAME, e);
 	NODE_PUSH_FRONT(ls->head, prev);
 	ls->head = prev;
 

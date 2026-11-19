@@ -67,7 +67,7 @@ FORCED(inline) bool _(push)(STRUCT *ls, const TYPENAME e) {
         return false;
 
     /* save into a previous preallocated block */
-    ls->head->data = (TYPENAME )e;
+    ls->head->data = CAST_PTR(TYPENAME, e);
 
     /* head must point to a preallocated block without data */
     blk->next = ls->head;

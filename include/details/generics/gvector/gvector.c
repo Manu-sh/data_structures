@@ -80,7 +80,7 @@ FORCED(inline) bool _(push_back)(STRUCT *vct, const TYPENAME e) {
 		vct->capacity *= 2;
 	}
 
-	vct->v[vct->idx++] = (TYPENAME )e;
+	vct->v[vct->idx++] = CAST_PTR(TYPENAME, e);
 	return true;
 }
 
