@@ -6,7 +6,10 @@
 
 
 #ifdef FORCED
-    #warning "FORCED() macro already defined, inline may not performed"
+    /* #pragma message has a wider support, #warn only by C23 */
+    #if defined(STDC_VERSION) && (STDC_VERSION >= 199901L)
+        #pragma message("FORCED() macro already defined, inline may not performed")
+    #endif
 #endif
 
 
