@@ -32,10 +32,10 @@
 #define __helper static FORCED(inline)
 
 #define SWAP(_TYPENAME_,A,B)          \
-	do {                      \
-		_TYPENAME_ _tmp_ = A; \
-		A = B;            \
-		B = _tmp_;        \
+	do {                              \
+		_TYPENAME_ _tmp_ = (A);       \
+		(A) = (B);                    \
+		(B) = _tmp_;                  \
 	} while(0)
 
 
@@ -43,4 +43,4 @@
     workaround the issue: "ISO C forbids casting nonscalar to the same type"
     be careful, this also strip the const qualifier away
 */
-#define CAST_PTR(_TYPENAME_, lvalue)   (*(_TYPENAME_ *)(void *)&(lvalue))
+#define CAST_PTR(_TYPENAME_, _LVALUE_)   (*(_TYPENAME_ *)(void *)&((_LVALUE_)))
