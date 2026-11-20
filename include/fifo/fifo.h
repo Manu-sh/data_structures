@@ -15,3 +15,4 @@
 
 #undef TYPENAME
 #undef TYPEID
+#undef CLASSNAME

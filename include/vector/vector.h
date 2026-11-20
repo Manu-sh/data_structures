@@ -27,3 +27,4 @@ FORCED(inline) TYPENAME _(back)(const STRUCT *vct) {
 
 #undef TYPENAME
 #undef TYPEID
+#undef CLASSNAME
