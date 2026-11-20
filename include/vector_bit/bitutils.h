@@ -54,8 +54,12 @@ static FORCED(inline) void clear_bit(uint8_t *restrict byte, uint8_t i) {
 // valid ranges for bit_length is 1-8
 // take_few_bits(0b11110101, 4) -> 1111
 // take_few_bits(0b10110101, 4) -> 1011
+
+// C11 (6.5.7) If the value of the right operand is negative or is greater than or equal to the width in bits of the promoted left operand,
+//  the behavior is undefined.
 static FORCED(inline) uint8_t take_few_bits(uint8_t byte, uint8_t bit_length) {
-    assert(bit_length < 8);
+    assert(bit_length < 8 && bit_length > 0); // shifting more than 8 bit is UB also if the tipe is unsigned
+
     return byte >> (8 - bit_length);
 }
 
