@@ -60,6 +60,7 @@ static FORCED(inline) void clear_bit(uint8_t *restrict byte, uint8_t i) {
 static FORCED(inline) uint8_t take_few_bits(uint8_t byte, uint8_t bit_length) {
     assert(bit_length <= 8 && bit_length > 0); // shifting more than 8 bit is UB also if the tipe is unsigned
 
+    // TODO: possible fix: bit_length &= (8 - bit_length) //  n &= sizeof(byte)*8-1;
     return byte >> (8 - bit_length);
 }
 
