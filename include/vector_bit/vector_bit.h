@@ -186,7 +186,7 @@ static FORCED(inline) void vector_bit_fast_pop(vector_bit *self) {
     self->bit_idx -= !!self->bit_idx; // same of: bit_idx -= bit_idx > 0 ? 1 : 0
 }
 
-
+// TODO: vector_bit_resize(bit_stream, bitstream_bitsz + 1);  +1 if we move bit_idx manually its required that v[bit_idx] point to the next empty bit
 static bool vector_bit_resize(vector_bit *self, uint64_t bit_len) {
 
     const uint64_t byte_capacity = bytes_required(bit_len);
