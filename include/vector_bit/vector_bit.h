@@ -70,6 +70,22 @@ static void vector_bit_free(vector_bit *self) {
     free(self);
 }
 
+// enlarge the vector capacity if needed
+static bool vector_bit_growth(vector_bit *self, uint64_t bit_len) {
+
+    if (self->bit_capacity-1 > bit_len)
+        return true;
+
+    const uint64_t byte_capacity = bytes_required(bit_len);
+    uint8_t *const nv = (uint8_t *)BLK_REALLOC(self->v, byte_capacity);
+    if (UNLIKELY(!nv)) return false;
+
+    self->v = nv;
+    self->bit_capacity = byte_capacity * 8;
+
+    return true;
+}
+
 
 static FORCED(inline) void vector_bit_assign(vector_bit *self, uint64_t bit_index, bool value) {
     assign_bit(self->v, bit_index, value);
@@ -101,7 +117,7 @@ static FORCED(inline) uint64_t vector_bit_capacity(const vector_bit *self) {
     return self->bit_capacity;
 }
 
-
+#if 0
 // return true unless fail (TODO: this a bit tricky an error code would be a better opt)
 static bool vector_bit_push(vector_bit *self, bool value) {
 
@@ -117,6 +133,26 @@ static bool vector_bit_push(vector_bit *self, bool value) {
         self->v = nv;
         self->bit_capacity = new_byte_capacity * 8;
         __builtin_prefetch(self->v,  1, 3);
+    }
+
+    vector_bit_assign(self, self->bit_idx, value), ++self->bit_idx;
+    // __builtin_prefetch(&self->bit_idx,  1, 3);
+
+    return true;
+}
+#endif
+
+// return true unless fail (TODO: this a bit tricky an error code would be a better opt)
+static bool vector_bit_push(vector_bit *self, bool value) {
+
+    assert(self->bit_idx <= self->bit_capacity-1);
+
+    /* doubling-halving: growUp */
+    if (UNLIKELY(self->bit_idx == self->bit_capacity-1)) { // if (UNLIKELY(self->bit_idx >= self->bit_capacity-1)) {
+
+        const uint64_t new_bit_capacity = self->bit_capacity * 2; // doubling the bit capacity
+        if (!vector_bit_growth(self, new_bit_capacity))
+            return false;
     }
 
     vector_bit_assign(self, self->bit_idx, value), ++self->bit_idx;
@@ -289,13 +325,10 @@ static vector_bit * vector_bit_push_all(vector_bit *self, const uint8_t *src, ui
 
         const uint64_t sz            = vector_bit_effective_byte_size(self);
         const uint64_t src_sz        = bytes_required(bit_length);
-        //const uint64_t new_size_bits = vector_bit_length(self) + bit_length + 1; // self->bit_idx <= self->bit_capacity-1
         const uint64_t new_size_bits = vector_bit_length(self) + bit_length + 1; // self->bit_idx <= self->bit_capacity-1
 
-        if ( new_size_bits >= vector_bit_capacity(self)) {
-            if (UNLIKELY(!vector_bit_resize(self, new_size_bits))) // 5+1 = 6
-                return NULL;
-        }
+        if (UNLIKELY(!vector_bit_growth(self, new_size_bits))) // 5+1 = 6
+            return NULL;
 
         assert(src != self->v);  // non dovrebbe mai succedere, eventualmente se &o == this usare memmove()
         assert(vector_bit_byte_capacity(self) >= sz + src_sz);
