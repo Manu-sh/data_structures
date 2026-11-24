@@ -105,6 +105,8 @@ static FORCED(inline) uint64_t vector_bit_capacity(const vector_bit *self) {
 // return true unless fail (TODO: this a bit tricky an error code would be a better opt)
 static bool vector_bit_push(vector_bit *self, bool value) {
 
+    assert(self->bit_idx <= self->bit_capacity-1);
+
     /* doubling-halving: growUp */
     if (UNLIKELY(self->bit_idx == self->bit_capacity-1)) { // if (UNLIKELY(self->bit_idx >= self->bit_capacity-1)) {
 
@@ -242,6 +244,34 @@ static FORCED(inline) bool vector_bit_back(const vector_bit *self) {
 }
 
 
+#if 0
+static vector_bit * vector_bit_push_all(vector_bit *self, const uint8_t *src, uint64_t bit_length) {
+
+    assert(self->bit_idx <= self->bit_capacity-1);
+    if (bit_length == 0) return self;
+
+    const uint64_t bit_sz = vector_bit_length(self);
+    const uint64_t new_bit_sz = bit_sz + bit_length + 1;
+
+    if (new_bit_sz >= vector_bit_capacity(self)) {
+        if (UNLIKELY(!vector_bit_resize(self, new_bit_sz))) // 5+1 = 6
+            return NULL;
+    }
+
+    for (uint64_t i = 0; i < bit_length; ++i) {
+        // __builtin_prefetch(src + 2,      0, 3);
+        // __builtin_prefetch(self->v + 2,  1, 3);
+
+        const bool bit_value = access_bit(src, i);
+        vector_bit_assign(self, self->bit_idx, bit_value), ++self->bit_idx;
+    }
+
+    assert(self->bit_idx <= self->bit_capacity-1);
+    assert(src != self->v);  // non dovrebbe mai succedere, eventualmente se &o == this usare memmove()
+    return self;
+}
+#endif
+
 // TODO: questa funzione va testata attentamente
 static vector_bit * vector_bit_push_all(vector_bit *self, const uint8_t *src, uint64_t bit_length) {
 
@@ -257,15 +287,16 @@ static vector_bit * vector_bit_push_all(vector_bit *self, const uint8_t *src, ui
         // if bit_length is not a multiple of 8, it's not a problem because the minimum addressable unit is 1 byte.
         // or more, so we can be sure that if bit_length were 9, there would be 2 bytes and not 1 byte.
 
-        const uint64_t sz     = vector_bit_effective_byte_size(self);
-        const uint64_t src_sz = bytes_required(bit_length);
+        const uint64_t sz            = vector_bit_effective_byte_size(self);
+        const uint64_t src_sz        = bytes_required(bit_length);
+        //const uint64_t new_size_bits = vector_bit_length(self) + bit_length + 1; // self->bit_idx <= self->bit_capacity-1
+        const uint64_t new_size_bits = vector_bit_length(self) + bit_length + 1; // self->bit_idx <= self->bit_capacity-1
 
-        if ( sz + src_sz >= vector_bit_byte_capacity(self)) {
-            if (UNLIKELY(!vector_bit_resize(self, (sz + src_sz) * 8 ))) // 5+1 = 6
+        if ( new_size_bits >= vector_bit_capacity(self)) {
+            if (UNLIKELY(!vector_bit_resize(self, new_size_bits))) // 5+1 = 6
                 return NULL;
         }
 
-        assert(self->bit_idx <= self->bit_capacity-1);
         assert(src != self->v);  // non dovrebbe mai succedere, eventualmente se &o == this usare memmove()
         assert(vector_bit_byte_capacity(self) >= sz + src_sz);
 
@@ -273,6 +304,8 @@ static vector_bit * vector_bit_push_all(vector_bit *self, const uint8_t *src, ui
         memcpy(dst, src, src_sz); // cpy(&buf[5], src, 1) -> this copy 1 byte starting from address 5 which is writeable because the size is 6
 
         self->bit_idx += bit_length;
+
+        assert(self->bit_idx <= self->bit_capacity-1);
         return self;
     }
 
@@ -284,6 +317,7 @@ static vector_bit * vector_bit_push_all(vector_bit *self, const uint8_t *src, ui
     return self;
 
 }
+
 
 static FORCED(inline) bool vector_bit_equal(const vector_bit *self, const vector_bit *other) {
 
@@ -393,7 +427,7 @@ static vector_bit * vector_bit_make_from_mem(const uint8_t *src, uint64_t bit_le
     if (UNLIKELY(!(self = vector_bit_new())))
         return NULL;
 
-    if (UNLIKELY(!vector_bit_resize(self, bit_length))) {
+    if (UNLIKELY(!vector_bit_resize(self, bit_length + 1))) {
         vector_bit_free(self);
         return NULL;
     }

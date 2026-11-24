@@ -580,7 +580,7 @@ void test_push_all() {
             vector_bit *dst = vector_bit_make_from_mem(vct8, 24);
 
             REQUIRE(vector_bit_effective_byte_size(dst) == 3);
-            REQUIRE(vector_bit_capacity(dst) == 24);
+            REQUIRE(vector_bit_capacity(dst) > 24);
             REQUIRE(vector_bit_length(dst) == 24);
             REQUIRE(vector_bit_last_bit_idx(dst) == 23);
 
@@ -606,6 +606,50 @@ void test_push_all() {
         }
 
         vector_bit_free(a);
+
+
+
+        {
+            vector_bit *dst = vector_bit_make_from_cstr("11111111");
+
+            /*
+            REQUIRE(vector_bit_effective_byte_size(dst) == 1);
+            REQUIRE(vector_bit_capacity(dst) == 8);
+            REQUIRE(vector_bit_length(dst) == 24);
+            REQUIRE(vector_bit_last_bit_idx(dst) == 23);
+
+            for (unsigned i = 0; i < vector_bit_length(dst); ++i)
+                REQUIRE(vector_bit_access(dst, i) == 1);
+                */
+
+            vector_bit *src = vector_bit_make_from_cstr("1");
+
+            vector_bit_cat(dst, src);
+            REQUIRE(vector_bit_effective_byte_size(dst) == 2);
+            REQUIRE(vector_bit_length(dst) == 9);
+            REQUIRE(vector_bit_last_bit_idx(dst) == 8);
+            REQUIRE(vector_bit_capacity(dst) > vector_bit_length(dst));
+            //REQUIRE(vector_bit_capacity(dst) == 10);
+
+            vector_bit_push(dst, 1);
+            vector_bit_push(dst, 1);
+            vector_bit_push(dst, 1);
+            vector_bit_push(dst, 1);
+            vector_bit_push(dst, 1);
+            vector_bit_push(dst, 1);
+            vector_bit_push(dst, 1);
+            vector_bit_push(dst, 1);
+            vector_bit_push(dst, 1);
+
+            REQUIRE(vector_bit_length(dst) == 18);
+            REQUIRE(vector_bit_last_bit_idx(dst) == 17);
+            REQUIRE(vector_bit_capacity(dst) > vector_bit_length(dst));
+
+            vector_bit_free(src);
+            vector_bit_free(dst);
+        }
+
+
 
     }
 
