@@ -53,3 +53,10 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+.zed/
+.idea/
+.vscode/
+
+test/*/test_c
+test/*/test_cpp
