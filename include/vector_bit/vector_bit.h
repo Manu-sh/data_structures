@@ -118,7 +118,7 @@ static bool vector_bit_push(vector_bit *self, bool value) {
     }
 
     vector_bit_assign(self, self->bit_idx, value), ++self->bit_idx;
-    __builtin_prefetch(&self->bit_idx,  1, 3);
+    // __builtin_prefetch(&self->bit_idx,  1, 3);
 
     return true;
 }
@@ -200,7 +200,7 @@ static FORCED(inline) uint64_t vector_bit_last_bit_idx(const vector_bit *self) {
 // how many bytes you effectively need to store the amount of bits that vector_bit actually contains
 // 0 if no bits are stored
 static FORCED(inline) uint64_t vector_bit_effective_byte_size(const vector_bit *self) {
-    uint64_t tmp = vector_bit_length(self);
+    const uint64_t tmp = vector_bit_length(self);
     return UNLIKELY(!tmp) ? 0 : bytes_required(tmp);
 }
 
@@ -211,7 +211,7 @@ static FORCED(inline) uint64_t vector_bit_last_element_byte_idx(const vector_bit
     // self->bit_idx point to the next unused bit
     // if we have 8 bit stored his value is 8 but the last element is stored into this[7]
 
-    uint64_t tmp = vector_bit_effective_byte_size(self);
+    const uint64_t tmp = vector_bit_effective_byte_size(self);
     return tmp - !!tmp; // same of: effective_byte_size() == 0 ? 0 : effective_byte_size() - 1;
 }
 
@@ -231,7 +231,7 @@ static FORCED(inline) uint8_t vector_bit_padding_bits(const vector_bit *self) {
 
 // cut away the padding bits from the last byte & return the last byte
 static FORCED(inline) uint8_t vector_bit_back_byte_without_padding(const vector_bit *self) {
-    uint8_t back_byte_with_padding_bits = *vector_bit_back_byte(self);
+    const uint8_t back_byte_with_padding_bits = *vector_bit_back_byte(self);
     return LIKELY(vector_bit_has_padding_bits(self)) ? take_few_bits(back_byte_with_padding_bits, 8-vector_bit_padding_bits(self)) : back_byte_with_padding_bits; // x&7 -> bit_length()%8
 }
 
@@ -257,8 +257,8 @@ static vector_bit * vector_bit_push_all(vector_bit *self, const uint8_t *src, ui
         // if bit_length is not a multiple of 8, it's not a problem because the minimum addressable unit is 1 byte.
         // or more, so we can be sure that if bit_length were 9, there would be 2 bytes and not 1 byte.
 
-        uint64_t sz     = vector_bit_effective_byte_size(self);
-        uint64_t src_sz = bytes_required(bit_length);
+        const uint64_t sz     = vector_bit_effective_byte_size(self);
+        const uint64_t src_sz = bytes_required(bit_length);
 
         if ( sz + src_sz >= vector_bit_byte_capacity(self)) {
             if (UNLIKELY(!vector_bit_resize(self, (sz + src_sz) * 8 ))) // 5+1 = 6
@@ -277,7 +277,7 @@ static vector_bit * vector_bit_push_all(vector_bit *self, const uint8_t *src, ui
     }
 
     for (uint64_t i = 0; i < bit_length; ++i) {
-        bool bit_value = access_bit(src, i);
+        const bool bit_value = access_bit(src, i);
         vector_bit_push(self, bit_value); // TODO: se fallisce ci faccio poco
     }
 
