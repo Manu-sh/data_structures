@@ -260,9 +260,12 @@ static vector_bit * vector_bit_push_all(vector_bit *self, const uint8_t *src, ui
         uint64_t sz     = vector_bit_effective_byte_size(self);
         uint64_t src_sz = bytes_required(bit_length);
 
-        if (UNLIKELY(!vector_bit_resize(self, (sz + src_sz) * 8 ))) // 5+1 = 6
-            return NULL;
+        if ( sz + src_sz >= vector_bit_byte_capacity(self)) {
+            if (UNLIKELY(!vector_bit_resize(self, (sz + src_sz) * 8 ))) // 5+1 = 6
+                return NULL;
+        }
 
+        assert(self->bit_idx <= self->bit_capacity-1);
         assert(src != self->v);  // non dovrebbe mai succedere, eventualmente se &o == this usare memmove()
         assert(vector_bit_byte_capacity(self) >= sz + src_sz);
 
