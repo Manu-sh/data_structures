@@ -44,7 +44,7 @@ void check_correctness(const vector<int> &sample) {
 	}
 
 
-	assert((int)pvct.size() == vector_int_length(vct));
+	assert(pvct.size() == vector_int_length(vct));
 
 	while (!vector_int_is_empty(vct)) {
 

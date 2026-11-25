@@ -10,6 +10,7 @@
 
 /* #pragma once */
 #include <stdbool.h>
+#include <stddef.h>
 
 #if !defined(CLASSNAME) || !defined(TYPENAME) || !defined(TYPEID)
 	#error "you must define CLASSNAME & TYPENAME & TYPEID"
