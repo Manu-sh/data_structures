@@ -9,9 +9,9 @@ void _(free)(STRUCT *ls);
 
 bool _(push_back)(STRUCT *ls, const TYPENAME e);
 bool _(push_front)(STRUCT *ls, const TYPENAME e);
-
-int  _(length)(const STRUCT *ls);
-bool _(is_empty)(const STRUCT *ls);
+size_t _(max_size)(const STRUCT *ls);
+size_t _(length)(const STRUCT *ls);
+bool   _(is_empty)(const STRUCT *ls);
 
 TYPENAME _(front)(const STRUCT *ls);
 TYPENAME _(back)(const STRUCT *ls);

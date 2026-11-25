@@ -2,6 +2,8 @@
 
 #include "../ccommon.c"
 
+#include <stddef.h>
+#include <stdint.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -18,12 +20,12 @@
 struct STRUCT {
 	TYPENAME *v;
 	bool (*lt)(TYPENAME,TYPENAME);
-	int idx;
-	int capacity;
+	size_t idx;
+	size_t capacity;
 };
 
 
-__helper void _(fixUp)(TYPENAME *v, bool (*lt)(TYPENAME,TYPENAME), int k) {
+__helper void _(fixUp)(TYPENAME *v, bool (*lt)(TYPENAME,TYPENAME), size_t k) {
 
 	while (k > 1 && lt(v[k>>1], v[k])) {
 		SWAP(TYPENAME, v[k>>1], v[k]);
@@ -31,7 +33,9 @@ __helper void _(fixUp)(TYPENAME *v, bool (*lt)(TYPENAME,TYPENAME), int k) {
 	}
 }
 
-__helper void _(fixDown)(TYPENAME *v, bool (*lt)(TYPENAME,TYPENAME), int p, int to) {
+__helper void _(fixDown)(TYPENAME *v, bool (*lt)(TYPENAME,TYPENAME), size_t p, size_t to) {
+
+    assert(p > 0 && p < SIZE_MAX);
 
 #if 0
 	for (int j; (j = p << 1) <= to; p = j) {
@@ -47,7 +51,7 @@ __helper void _(fixDown)(TYPENAME *v, bool (*lt)(TYPENAME,TYPENAME), int p, int 
 #endif
 
 #if 1
-	int j = to;
+	size_t j = to;
 	while ((p << 1) < to) {
 
 		j = lt(v[p<<1], v[(p<<1)+1]) ? (p<<1)+1 : p << 1;
@@ -66,9 +70,9 @@ __helper void _(fixDown)(TYPENAME *v, bool (*lt)(TYPENAME,TYPENAME), int p, int 
 }
 
 
-/* INT_MAX-1 because heap start at 1 */
-FORCED(inline)	int _(max_size)() {
-	return INT_MAX-1;
+/* SIZE_MAX-1 because heap start at 1 */
+FORCED(inline)	size_t _(max_size)() {
+	return SIZE_MAX-1;
 }
 
 /* provide a less_than() or greater_then() function
@@ -112,7 +116,7 @@ FORCED(inline) TYPENAME  _(peek)(const STRUCT *hp) {
 
 
 /* number of elements that heap contains */
-FORCED(inline) int _(length)(const STRUCT *hp) {
+FORCED(inline) size_t _(length)(const STRUCT *hp) {
 	 return hp->idx;
 }
 

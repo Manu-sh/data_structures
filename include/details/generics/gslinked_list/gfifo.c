@@ -1,8 +1,10 @@
 /* GFIFO.C */
 #include "../ccommon.c"
 
+#include <cstddef>
 #include <limits.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <assert.h>
 
@@ -15,16 +17,16 @@ struct STRUCT {
 	_(Node) *head;
 	_(Node) *tail; /* point to a preallocated block without data */
 	_(Node) *back; /* point to a valid block which may contain the last inserted value if !empty  */
-	int length; /* for obvious reasons the tail isn't count as part of length */
+	size_t length; /* for obvious reasons the tail isn't count as part of length */
 };
 
 /* in the worst case back point to head and that coincide with tail
 (the pre-allocated block) (ls->back == ls->head == ls->tail)
 so a->back it's a valid blk */
 
-FORCED(inline) int       _(max_size)()                 { return INT_MAX; }
+FORCED(inline) size_t    _(max_size)()                 { return SIZE_MAX; }
 FORCED(inline) TYPENAME  _(back)(const STRUCT *ls)     { return ls->back->data;  }
-FORCED(inline) int       _(length)(const STRUCT *ls)   { return ls->length;      }
+FORCED(inline) size_t    _(length)(const STRUCT *ls)   { return ls->length;      }
 FORCED(inline) bool      _(is_empty)(const STRUCT *ls) { return !ls->head->next; }
 FORCED(inline) TYPENAME  _(top)(const STRUCT *ls)      { return ls->head->data;  } /* there is always at least 1 blk */
 

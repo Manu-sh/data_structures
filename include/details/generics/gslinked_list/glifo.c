@@ -3,6 +3,7 @@
 
 #include <limits.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <assert.h>
 
@@ -25,9 +26,9 @@ so a->front it's a valid blk */
 /* TODO test */
 FORCED(inline) TYPENAME _(top)(const STRUCT *ls)      { return ls->head->next->data; }
 FORCED(inline) TYPENAME _(back)(const STRUCT *ls)     { return ls->tail->data;  } /* there is always at least 1 blk */
-FORCED(inline) int      _(length)(const STRUCT *ls)   { return ls->length;      }
+FORCED(inline) size_t   _(length)(const STRUCT *ls)   { return ls->length;      }
 FORCED(inline) bool     _(is_empty)(const STRUCT *ls) { return !ls->head->next; }
-FORCED(inline) int      _(max_size)()                 { return INT_MAX;         }
+FORCED(inline) size_t   _(max_size)()                 { return SIZE_MAX;        }
 
 FORCED(inline) STRUCT * _(new)() {
 

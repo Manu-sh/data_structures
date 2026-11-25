@@ -31,7 +31,7 @@ int main() {
 	for (i = 0; i < 100; i++)
 		pqueue_int_add(hp, rand());
 
-	printf("length: %d\n", pqueue_int_length(hp));
+	printf("length: %zu\n", pqueue_int_length(hp));
 
 	while (!pqueue_int_is_empty(hp))
 		printf("%d\n", pqueue_int_remove(hp));

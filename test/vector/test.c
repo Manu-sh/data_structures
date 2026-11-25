@@ -20,8 +20,8 @@ int main() {
 
 	vector_char_push_back_all(vchar, "hello world", strlen("hello world"));
 
-	printf("%lu\n", vector_char_length(vchar));
-	printf("%lu\n", vector_char_capacity(vchar));
+	printf("%zu\n", vector_char_length(vchar));
+	printf("%zu\n", vector_char_capacity(vchar));
 
 	assert(vector_char_length(vchar) == strlen("hello world"));
 	assert((unsigned)vector_char_capacity(vchar) > strlen("hello world"));
