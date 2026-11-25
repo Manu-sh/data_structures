@@ -280,85 +280,8 @@ static FORCED(inline) bool vector_bit_back(const vector_bit *self) {
 }
 
 
-#if 0
+// src must not be self->src
 static vector_bit * vector_bit_push_all(vector_bit *self, const uint8_t *src, uint64_t bit_length) {
-
-    assert(self->bit_idx <= self->bit_capacity-1);
-    if (bit_length == 0) return self;
-
-    const uint64_t bit_sz = vector_bit_length(self);
-    const uint64_t new_bit_sz = bit_sz + bit_length + 1;
-
-    if (new_bit_sz >= vector_bit_capacity(self)) {
-        if (UNLIKELY(!vector_bit_resize(self, new_bit_sz))) // 5+1 = 6
-            return NULL;
-    }
-
-    for (uint64_t i = 0; i < bit_length; ++i) {
-        // __builtin_prefetch(src + 2,      0, 3);
-        // __builtin_prefetch(self->v + 2,  1, 3);
-
-        const bool bit_value = access_bit(src, i);
-        vector_bit_assign(self, self->bit_idx, bit_value), ++self->bit_idx;
-    }
-
-    assert(self->bit_idx <= self->bit_capacity-1);
-    assert(src != self->v);  // non dovrebbe mai succedere, eventualmente se &o == this usare memmove()
-    return self;
-}
-#endif
-
-
-#if 0
-// TODO: questa funzione va testata attentamente
-static vector_bit * vector_bit_push_all(vector_bit *self, const uint8_t *src, uint64_t bit_length) {
-
-    // uint64_t rest_bit = bit_length & 7;
-    // uint64_t byte_length = (bit_length - rest_bit) >> 3;
-
-    if (bit_length == 0)
-        return self;
-
-    // we are lucky 'cause we can block-copy
-    if (UNLIKELY(!vector_bit_has_padding_bits(self))) { // if (this->bit_length() % 8 == 0)
-
-        // if bit_length is not a multiple of 8, it's not a problem because the minimum addressable unit is 1 byte.
-        // or more, so we can be sure that if bit_length were 9, there would be 2 bytes and not 1 byte.
-
-        const uint64_t sz            = vector_bit_effective_byte_size(self);
-        const uint64_t src_sz        = bytes_required(bit_length);
-        const uint64_t new_size_bits = vector_bit_length(self) + bit_length + 1; // self->bit_idx <= self->bit_capacity-1
-
-        if (UNLIKELY(!vector_bit_growth(self, new_size_bits))) // 5+1 = 6
-            return NULL;
-
-        assert(src != self->v);  // non dovrebbe mai succedere, eventualmente se &o == this usare memmove()
-        assert(vector_bit_byte_capacity(self) >= sz + src_sz);
-
-        void *dst = (void *)(self->v + sz); // skip N bytes -> buf+5
-        memcpy(dst, src, src_sz); // cpy(&buf[5], src, 1) -> this copy 1 byte starting from address 5 which is writeable because the size is 6
-
-        self->bit_idx += bit_length;
-
-        assert(self->bit_idx <= self->bit_capacity-1);
-        return self;
-    }
-
-    for (uint64_t i = 0; i < bit_length; ++i) {
-        const bool bit_value = access_bit(src, i);
-        vector_bit_push(self, bit_value); // TODO: se fallisce ci faccio poco
-    }
-
-    return self;
-
-}
-#endif
-
-
-static vector_bit * vector_bit_push_all(vector_bit *self, const uint8_t *src, uint64_t bit_length) {
-
-    // uint64_t rest_bit = bit_length & 7;
-    // uint64_t byte_length = (bit_length - rest_bit) >> 3;
 
     if (bit_length == 0) return self;
 
@@ -375,7 +298,6 @@ static vector_bit * vector_bit_push_all(vector_bit *self, const uint8_t *src, ui
             return NULL;
 
         assert(src != self->v);  // non dovrebbe mai succedere, eventualmente se &o == this usare memmove()
-
         uint8_t *const dst = self->v + old_sz_bytes;
 
         {
@@ -396,7 +318,6 @@ static vector_bit * vector_bit_push_all(vector_bit *self, const uint8_t *src, ui
     }
 
     return self;
-
 }
 
 
