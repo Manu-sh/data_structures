@@ -280,6 +280,17 @@ static FORCED(inline) bool vector_bit_back(const vector_bit *self) {
 }
 
 
+// expand to host nbits in addition to the actually hosted bits
+static bool vector_bit_expan_of(vector_bit *self, uint64_t nbits) {
+
+    // self->bit_idx <= self->bit_capacity-1
+    const uint64_t new_sz_bits = vector_bit_length(self) + nbits + 1;
+    if (UNLIKELY(!vector_bit_growth(self, new_sz_bits)))
+        return false;
+
+    return true;
+}
+
 // src must not be self->src
 static vector_bit * vector_bit_push_all(vector_bit *self, const uint8_t *src, uint64_t bit_length) {
 
