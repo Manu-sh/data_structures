@@ -308,6 +308,8 @@ static vector_bit * vector_bit_push_all(vector_bit *self, const uint8_t *src, ui
 }
 #endif
 
+
+#if 0
 // TODO: questa funzione va testata attentamente
 static vector_bit * vector_bit_push_all(vector_bit *self, const uint8_t *src, uint64_t bit_length) {
 
@@ -350,6 +352,53 @@ static vector_bit * vector_bit_push_all(vector_bit *self, const uint8_t *src, ui
     return self;
 
 }
+#endif
+
+
+static vector_bit * vector_bit_push_all(vector_bit *self, const uint8_t *src, uint64_t bit_length) {
+
+    // uint64_t rest_bit = bit_length & 7;
+    // uint64_t byte_length = (bit_length - rest_bit) >> 3;
+
+    if (bit_length == 0) return self;
+
+    // we are lucky 'cause we can block-copy
+    if (UNLIKELY(!vector_bit_has_padding_bits(self))) { // if (this->bit_length() % 8 == 0)
+
+        // if bit_length is not a multiple of 8, it's not a problem because the minimum addressable unit is 1 byte.
+        // or more, so we can be sure that if bit_length were 9, there would be 2 bytes and not 1 byte.
+
+        const uint64_t new_sz_bits  = vector_bit_length(self) + bit_length + 1; // self->bit_idx <= self->bit_capacity-1
+        const uint64_t old_sz_bytes = vector_bit_effective_byte_size(self);
+
+        if (UNLIKELY(!vector_bit_growth(self, new_sz_bits)))
+            return NULL;
+
+        assert(src != self->v);  // non dovrebbe mai succedere, eventualmente se &o == this usare memmove()
+
+        uint8_t *const dst = self->v + old_sz_bytes;
+
+        {
+            const uint8_t *const end = self->v + vector_bit_byte_capacity(self);
+            assert(dst + bytes_required(bit_length) <= end); // this mean the next memcpy is safe
+        }
+
+        memcpy((void *)dst, src, bytes_required(bit_length));
+        self->bit_idx += bit_length; // due the +1 bit i can do this
+
+        assert(self->bit_idx <= self->bit_capacity-1);
+        return self;
+    }
+
+    for (uint64_t i = 0; i < bit_length; ++i) {
+        const bool bit_value = access_bit(src, i);
+        vector_bit_push(self, bit_value); // TODO: se fallisce ci faccio poco
+    }
+
+    return self;
+
+}
+
 
 
 static FORCED(inline) bool vector_bit_equal(const vector_bit *self, const vector_bit *other) {

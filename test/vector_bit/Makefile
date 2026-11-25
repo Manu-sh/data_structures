@@ -1,5 +1,5 @@
-#CXXFLAGS=-std=c++11 -O3 -ffast-math -pipe -ffast-math -Wall -Wextra -D_REENTRANT -Wno-unused-function -fstack-protector-all -fstack-protector-strong -funroll-loops -pedantic -Werror #-fno-strict-aliasing
-#CXXFLAGS += -I ../../include/
+CXXFLAGS=-std=c++11 -O0 -pipe -Wall -Wextra -Werror -D_REENTRANT -Wno-unused-function -pedantic -fstack-protector-all -fstack-protector-strong -fno-builtin-memcpy -g3 -fno-omit-frame-pointer -ftrapv #-fno-strict-aliasing
+CXXFLAGS += -I ../../include/
 
 ASAN_FLAGS=-fsanitize=address,undefined,null,alignment,leak,pointer-compare,pointer-subtract,unreachable
 
@@ -14,7 +14,13 @@ all:
 	$(CC) $(CFLAGS) -o test_c test.c
 	$(CC) $(CFLAGS) $(ASAN_FLAGS) -o test_c_asan test.c
 
+	$(CXX) $(CXXFLAGS) -o test_cpp test.cpp
+	$(CXX) $(CXXFLAGS) $(ASAN_FLAGS) -o test_cpp_asan test.cpp
+
+	./test_cpp_asan
 	./test_c_asan
+
+	$(VALGRIND) ./test_cpp
 	$(VALGRIND) ./test_c
 
 build_benchmark:
@@ -24,4 +30,4 @@ benchmark: build_benchmark
 	time ./benchmark
 
 clean:
-	rm -rf test_c test_c_asan benchmark
+	rm -rf test_c test_c_asan test_cpp test_cpp_asan benchmark

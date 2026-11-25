@@ -60,3 +60,5 @@ dkms.conf
 
 test/*/test_c
 test/*/test_cpp
+test/*/test_c_asan
+test/*/test_cpp_asan
