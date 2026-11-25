@@ -1,7 +1,6 @@
 /* GFIFO.C */
 #include "../ccommon.c"
 
-#include <cstddef>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
