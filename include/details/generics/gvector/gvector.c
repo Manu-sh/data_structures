@@ -1,6 +1,6 @@
 /* GVECTOR.C */
 
-#include "../ccommon.c"
+#include "../gcommon.c"
 
 #include <assert.h>
 #include <stdint.h>

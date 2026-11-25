@@ -1,7 +1,7 @@
 /* only g*.c should include this header */
 #pragma once
-#ifndef CCOMMON_H
-	#include "ccommon.h"
+#ifndef GCOMMON_H
+	#include "gcommon.h"
 #endif
 
 

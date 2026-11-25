@@ -2,7 +2,7 @@
     #error "missing CLASSNAME macro definition"
 #endif
 
-#include "../ccommon.h"
+#include "../gcommon.h"
 
 STRUCT * _(new());
 void _(free)(STRUCT *ls);

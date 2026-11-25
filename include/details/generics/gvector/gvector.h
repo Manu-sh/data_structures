@@ -1,7 +1,7 @@
 #undef  CLASSNAME
 #define CLASSNAME vector
 
-#include "../ccommon.h"
+#include "../gcommon.h"
 
 STRUCT * _(new)();
 void _(free)(STRUCT *vct);

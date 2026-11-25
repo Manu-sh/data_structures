@@ -1,11 +1,12 @@
-/* the following define is used only by ccommon.c */
-#define CCOMMON_H
+#define GCOMMON_H
+
+/* the following define is used only by gcommon.c */
 
 /* CLASSNAME & TYPENAME MUST BE DEFINED BEFORE INCLUDING THIS HDR
-	example:
-		#define CLASSNAME vector
-		#define TYPEID char_ptr
-		#define TYPENAME char *
+   	example:
+  		#define CLASSNAME vector
+  		#define TYPEID char_ptr
+  		#define TYPENAME char *
 */
 
 /* #pragma once */
@@ -13,7 +14,7 @@
 #include <stddef.h>
 
 #if !defined(CLASSNAME) || !defined(TYPENAME) || !defined(TYPEID)
-	#error "you must define CLASSNAME & TYPENAME & TYPEID"
+   	#error "you must define CLASSNAME & TYPENAME & TYPEID"
 #endif
 
 #define EMPTY

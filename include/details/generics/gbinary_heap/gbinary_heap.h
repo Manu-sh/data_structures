@@ -2,7 +2,7 @@
     #error "missing CLASSNAME macro definition"
 #endif
 
-#include "../ccommon.h"
+#include "../gcommon.h"
 
 size_t _(max_size)();
 

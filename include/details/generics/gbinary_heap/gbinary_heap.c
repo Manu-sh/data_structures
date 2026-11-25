@@ -1,6 +1,6 @@
 /* GBINARY_HEAP.C */
 
-#include "../ccommon.c"
+#include "../gcommon.c"
 
 #include <stddef.h>
 #include <stdint.h>

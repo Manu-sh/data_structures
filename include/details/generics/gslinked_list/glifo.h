@@ -1,6 +1,6 @@
 #undef  CLASSNAME
 #define CLASSNAME lifo
-#include "../ccommon.h"
+#include "../gcommon.h"
 
 STRUCT * _(new)();
 void     _(free)(STRUCT *ls);

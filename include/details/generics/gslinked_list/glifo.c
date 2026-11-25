@@ -1,5 +1,5 @@
 /* GLIFO.C */
-#include "../ccommon.c"
+#include "../gcommon.c"
 
 #include <limits.h>
 #include <stdbool.h>
