@@ -10,8 +10,8 @@
 
 struct STRUCT {
 	TYPENAME *v;
-	size_t idx;
-	size_t capacity;
+	USZT idx;
+	USZT capacity;
 };
 
 #if 0
@@ -20,16 +20,16 @@ struct STRUCT {
 
 FORCED(inline) TYPENAME * _(data)(const STRUCT *vct)     { return vct->v;        }
 FORCED(inline) bool       _(is_empty)(const STRUCT *vct) { return vct->idx == 0; }
-FORCED(inline) size_t     _(length)(const STRUCT *vct)   { return vct->idx;      }
-FORCED(inline) size_t     _(max_size)()                  { return SIZE_MAX;      }
+FORCED(inline) USZT       _(length)(const STRUCT *vct)   { return vct->idx;      }
+FORCED(inline) USZT       _(max_size)()                  { return (-1);      }
 FORCED(inline) void       _(clear)(STRUCT *vct)          { vct->idx = 0;         }
-FORCED(inline) size_t     _(capacity)(const STRUCT *vct) { return vct->capacity; }
+FORCED(inline) USZT       _(capacity)(const STRUCT *vct) { return vct->capacity; }
 
 /* vector random access */
-FORCED(inline) TYPENAME _(access)(const STRUCT *vct, size_t at) { return vct->v[at]; }
-FORCED(inline) void _(assign)(STRUCT *vct, size_t at, const TYPENAME e) { vct->v[at] = CAST_PTR(TYPENAME, e); }
+FORCED(inline) TYPENAME _(access)(const STRUCT *vct, USZT at) { return vct->v[at]; }
+FORCED(inline) void _(assign)(STRUCT *vct, USZT at, const TYPENAME e) { vct->v[at] = CAST_PTR(TYPENAME, e); }
 
-FORCED(inline) bool _(resize)(STRUCT *vct, size_t len) {
+FORCED(inline) bool _(resize)(STRUCT *vct, USZT len) {
 
 	TYPENAME *nv = (TYPENAME *)realloc(vct->v, len * sizeof(TYPENAME ));
 	if (UNLIKELY(!nv)) return false;
@@ -86,7 +86,7 @@ FORCED(inline) bool _(push_back)(STRUCT *vct, const TYPENAME e) {
 	return true;
 }
 
-FORCED(inline) bool _(push_back_all)(STRUCT *vct, const TYPENAME *v, size_t len) {
+FORCED(inline) bool _(push_back_all)(STRUCT *vct, const TYPENAME *v, USZT len) {
 
 	const TYPENAME *end = v+len;
 
@@ -126,7 +126,7 @@ FORCED(inline) TYPENAME _(pop_back)(STRUCT *vct) {
 }
 
 /* get back the old element */
-FORCED(inline) TYPENAME _(replace)(STRUCT *vct, size_t at, const TYPENAME e) {
+FORCED(inline) TYPENAME _(replace)(STRUCT *vct, USZT at, const TYPENAME e) {
 	TYPENAME ret = vct->v[at];
 	return (vct->v[at] = (TYPENAME)e), ret;
 }

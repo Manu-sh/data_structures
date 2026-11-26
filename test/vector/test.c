@@ -1,3 +1,5 @@
+#define USIZETYPE size_t
+
 #include "vector/vector_char.h"
 #include "vector/vector_int.h"
 #include "vector/vector_void_ptr.h"

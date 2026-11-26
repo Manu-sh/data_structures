@@ -2,6 +2,7 @@
 
 extern "C" {
 	#include <unistd.h>
+	#define USIZETYPE size_t
 	#include "vector/vector_int.h" /* include vector_int.c directly to allow function inlining */
 }
 
