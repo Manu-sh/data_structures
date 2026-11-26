@@ -150,6 +150,7 @@ static bool vector_bit_push(vector_bit *self, bool value) {
     /* doubling-halving: growUp */
     if (UNLIKELY(self->bit_idx == self->bit_capacity-1)) { // if (UNLIKELY(self->bit_idx >= self->bit_capacity-1)) {
 
+        assert(self->bit_capacity != UINT64_MAX);
         const uint64_t new_bit_capacity = self->bit_capacity * 2; // doubling the bit capacity
         if (!vector_bit_growth(self, new_bit_capacity))
             return false;
