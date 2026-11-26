@@ -1,4 +1,4 @@
-#define USIZETYPE size_t
+// #define USIZETYPE size_t
 
 #include "vector/vector_char.h"
 #include "vector/vector_int.h"

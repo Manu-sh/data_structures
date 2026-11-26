@@ -13,8 +13,8 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-#if !defined(CLASSNAME) || !defined(TYPENAME) || !defined(TYPEID) || !defined(USIZETYPE)
-   	#error "you must define CLASSNAME & TYPENAME & TYPEID & USIZETYPE"
+#if !defined(CLASSNAME) || !defined(TYPENAME) || !defined(TYPEID)
+   	#error "you must define CLASSNAME & TYPENAME & TYPEID"
 #endif
 
 #define EMPTY
@@ -26,8 +26,16 @@
 #define STRUCT    TKPASTE(CLASSNAME, UNDERSCORE, TYPEID) /* example: vector_char */
 typedef struct STRUCT STRUCT;
 
-typedef USIZETYPE _(USIZETYPE); /* example: size_t -> vector_char_size_t */
-#define USZT _(USIZETYPE)
+/*
+il problema qui è che le classi non contemplavano di raggiungere mai realmente la quantità massima di elementi inseribili
+nemmeno sulla capacity, di conseguenza è possibile che vada in overflow usando tipi custom piccoli come uint8_t per le lunghezze
+
+#if !defined(USIZETYPE)
+    #error "you must define CLASSNAME & TYPENAME & TYPEID & USIZETYPE"
+    typedef USIZETYPE _(USIZETYPE); // example: size_t -> vector_char_size_t
+    #define USZT _(USIZETYPE)
+#endif
+*/
 
 #ifndef LIKELY
     #define LIKELY(_EXP_)       __builtin_expect((_EXP_), 1)
