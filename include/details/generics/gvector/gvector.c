@@ -42,6 +42,8 @@ FORCED(inline) bool _(resize)(STRUCT *vct, size_t len) {
 }
 
 FORCED(inline) bool _(shrink_to_fit)(STRUCT *vct) {
+    assert(vct->idx + 1 != _(max_size)());
+
 	TYPENAME *nv = (TYPENAME *)realloc(vct->v, (vct->idx+1) * sizeof(TYPENAME ));
 	if (UNLIKELY(!nv)) return false;
     vct->v = nv;
@@ -75,6 +77,8 @@ FORCED(inline) bool _(push_back)(STRUCT *vct, const TYPENAME e) {
 
 	/* doubling-halving: growUp */
 	if (vct->idx >= vct->capacity-1) {
+	    assert(vct->capacity <= _(max_size)() / 2);
+
 		TYPENAME *nv = (TYPENAME *)realloc(vct->v, (vct->capacity*2) * sizeof(TYPENAME ));
 		if (UNLIKELY(!nv)) return false;
 
@@ -91,6 +95,7 @@ FORCED(inline) bool _(push_back_all)(STRUCT *vct, const TYPENAME *v, size_t len)
 	const TYPENAME *end = v+len;
 
 	if (vct->idx+len >= vct->capacity) {
+	    assert(vct->capacity+len <= _(max_size)());
 
 		TYPENAME *nv = (TYPENAME *)realloc(vct->v, (vct->capacity+len) * sizeof(TYPENAME ));
 		if (UNLIKELY(!nv)) return false;
