@@ -14,6 +14,7 @@
 #include <stddef.h>
 
 #if !defined(CLASSNAME) || !defined(TYPENAME) || !defined(TYPEID)
+/* #if !defined(CLASSNAME) || !defined(TYPENAME) || !defined(TYPEID) || !defined(SIZETYPE) */
    	#error "you must define CLASSNAME & TYPENAME & TYPEID"
 #endif
 
@@ -24,8 +25,13 @@
 
 #define _(_NAME_) TKPASTE(CLASSNAME, TKPASTE(UNDERSCORE, TYPEID, UNDERSCORE), _NAME_) /* _(popBack) -> vector_char_popBack */
 #define STRUCT    TKPASTE(CLASSNAME, UNDERSCORE, TYPEID) /* example: vector_char */
+/*
+#define SIZE_TYPE TKPASTE(CLASSNAME, TKPASTE(UNDERSCORE, TYPEID, UNDERSCORE), SIZETYPE) // example: vector_char_size_t
+*/
 typedef struct STRUCT STRUCT;
-
+/*
+typedef SIZETYPE SIZE_TYPE;
+*/
 
 #ifndef LIKELY
     #define LIKELY(_EXP_)       __builtin_expect((_EXP_), 1)

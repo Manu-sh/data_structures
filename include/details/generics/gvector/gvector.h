@@ -1,6 +1,11 @@
 #undef  CLASSNAME
 #define CLASSNAME vector
 
+/*
+#ifndef SIZETYPE
+    #define SIZETYPE size_t
+#endif
+*/
 #include "../gcommon.h"
 
 STRUCT * _(new)();
