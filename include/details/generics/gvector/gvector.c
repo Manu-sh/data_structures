@@ -19,12 +19,12 @@ struct STRUCT {
 #define ALIGN16(_X_) (((_X_)+(16)) & ~0x0f)
 #endif
 
-FORCED(inline) TYPENAME * _(data)(const STRUCT *vct)     { return vct->v;        }
-FORCED(inline) bool       _(is_empty)(const STRUCT *vct) { return vct->idx == 0; }
-FORCED(inline) size_t     _(length)(const STRUCT *vct)   { return vct->idx;      }
-FORCED(inline) size_t     _(max_size)(const STRUCT *vct) { return (-1);          }
-FORCED(inline) void       _(clear)(STRUCT *vct)          { vct->idx = 0;         }
-FORCED(inline) size_t     _(capacity)(const STRUCT *vct) { return vct->capacity; }
+FORCED(inline) TYPENAME * _(data)(const STRUCT *vct)     { return vct->v;          }
+FORCED(inline) bool       _(is_empty)(const STRUCT *vct) { return vct->idx == 0;   }
+FORCED(inline) size_t     _(length)(const STRUCT *vct)   { return vct->idx;        }
+FORCED(inline) size_t     _(max_size)(const STRUCT *vct) { (void)vct; return (-1); }
+FORCED(inline) void       _(clear)(STRUCT *vct)          { vct->idx = 0;           }
+FORCED(inline) size_t     _(capacity)(const STRUCT *vct) { return vct->capacity;   }
 
 /* vector random access */
 FORCED(inline) TYPENAME _(access)(const STRUCT *vct, size_t at) { return vct->v[at]; }
