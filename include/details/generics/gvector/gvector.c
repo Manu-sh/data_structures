@@ -22,7 +22,7 @@ struct STRUCT {
 FORCED(inline) TYPENAME * _(data)(const STRUCT *vct)     { return vct->v;        }
 FORCED(inline) bool       _(is_empty)(const STRUCT *vct) { return vct->idx == 0; }
 FORCED(inline) size_t     _(length)(const STRUCT *vct)   { return vct->idx;      }
-FORCED(inline) size_t     _(max_size)()                  { return (-1);          }
+FORCED(inline) size_t     _(max_size)(const STRUCT *vct) { return (-1);          }
 FORCED(inline) void       _(clear)(STRUCT *vct)          { vct->idx = 0;         }
 FORCED(inline) size_t     _(capacity)(const STRUCT *vct) { return vct->capacity; }
 
@@ -32,7 +32,7 @@ FORCED(inline) void _(assign)(STRUCT *vct, size_t at, const TYPENAME e) { vct->v
 
 FORCED(inline) bool _(resize)(STRUCT *vct, size_t len) {
 
-    assert(len <= _(max_size)());
+    assert(len <= _(max_size)(vct));
 
 	TYPENAME *nv = (TYPENAME *)realloc(vct->v, len * sizeof(TYPENAME ));
 	if (UNLIKELY(!nv)) return false;
@@ -45,7 +45,7 @@ FORCED(inline) bool _(resize)(STRUCT *vct, size_t len) {
 }
 
 FORCED(inline) bool _(shrink_to_fit)(STRUCT *vct) {
-    assert(vct->idx + 1 != _(max_size)());
+    assert(vct->idx + 1 != _(max_size)(vct));
 
 	TYPENAME *nv = (TYPENAME *)realloc(vct->v, (vct->idx+1) * sizeof(TYPENAME ));
 	if (UNLIKELY(!nv)) return false;
@@ -80,7 +80,7 @@ FORCED(inline) bool _(push_back)(STRUCT *vct, const TYPENAME e) {
 
 	/* doubling-halving: growUp */
 	if (vct->idx >= vct->capacity-1) {
-	    assert(vct->capacity <= _(max_size)() / 2);
+	    assert(vct->capacity <= _(max_size)(vct) / 2);
 
 		TYPENAME *nv = (TYPENAME *)realloc(vct->v, (vct->capacity*2) * sizeof(TYPENAME ));
 		if (UNLIKELY(!nv)) return false;
@@ -98,7 +98,7 @@ FORCED(inline) bool _(push_back_all)(STRUCT *vct, const TYPENAME *v, size_t len)
 	const TYPENAME *end = v+len;
 
 	if (vct->idx+len >= vct->capacity) {
-	    assert(vct->capacity+len <= _(max_size)());
+	    assert(vct->capacity+len <= _(max_size)(vct));
 
 		TYPENAME *nv = (TYPENAME *)realloc(vct->v, (vct->capacity+len) * sizeof(TYPENAME ));
 		if (UNLIKELY(!nv)) return false;

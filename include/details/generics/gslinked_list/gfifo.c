@@ -24,7 +24,7 @@ struct STRUCT {
 (the pre-allocated block) (ls->back == ls->head == ls->tail)
 so a->back it's a valid blk */
 
-FORCED(inline) size_t    _(max_size)()                 { return (-1);            }
+FORCED(inline) size_t    _(max_size)(const STRUCT *vct){ (void)vct; return (-1); }
 FORCED(inline) TYPENAME  _(back)(const STRUCT *ls)     { return ls->back->data;  }
 FORCED(inline) size_t    _(length)(const STRUCT *ls)   { return ls->length;      }
 FORCED(inline) bool      _(is_empty)(const STRUCT *ls) { return !ls->head->next; }

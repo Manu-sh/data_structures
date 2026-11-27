@@ -8,7 +8,7 @@ void _(free)(STRUCT *vct);
 
 bool       _(is_empty)(const STRUCT *vct);
 size_t     _(length)(const STRUCT *vct);
-size_t     _(max_size)();
+size_t     _(max_size)(const STRUCT *vct);
 void       _(clear)(STRUCT *vct);
 bool       _(resize)(STRUCT *vct, size_t len);
 size_t     _(capacity)(const STRUCT *vct);

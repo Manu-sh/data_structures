@@ -4,7 +4,7 @@
 
 #include "../gcommon.h"
 
-size_t _(max_size)();
+size_t _(max_size)(const STRUCT *hp);
 
 /* get a new heap ctx back */
 STRUCT * _(new)(bool (*lt)(TYPENAME,TYPENAME));

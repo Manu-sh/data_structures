@@ -27,10 +27,10 @@ so a->front it's a valid blk */
 
 /* TODO test */
 FORCED(inline) TYPENAME _(top)(const STRUCT *ls)      { return ls->head->next->data; }
-FORCED(inline) TYPENAME _(back)(const STRUCT *ls)     { return ls->tail->data;  } /* there is always at least 1 blk */
-FORCED(inline) size_t   _(length)(const STRUCT *ls)   { return ls->length;      }
-FORCED(inline) bool     _(is_empty)(const STRUCT *ls) { return !ls->head->next; }
-FORCED(inline) size_t   _(max_size)()                 { return (-1);            }
+FORCED(inline) TYPENAME _(back)(const STRUCT *ls)     { return ls->tail->data;       } /* there is always at least 1 blk */
+FORCED(inline) size_t   _(length)(const STRUCT *ls)   { return ls->length;           }
+FORCED(inline) bool     _(is_empty)(const STRUCT *ls) { return !ls->head->next;      }
+FORCED(inline) size_t   _(max_size)(const STRUCT *ls) { (void)ls; return (-1);       }
 
 FORCED(inline) STRUCT * _(new)() {
 

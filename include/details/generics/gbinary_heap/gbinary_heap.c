@@ -71,7 +71,8 @@ __helper void _(fixDown)(TYPENAME *v, bool (*lt)(TYPENAME,TYPENAME), size_t p, s
 
 
 /* SIZE_MAX-1 because heap start at 1 */
-FORCED(inline)	size_t _(max_size)() {
+FORCED(inline)	size_t _(max_size)(const STRUCT *hp) {
+    (void)hp; // shutup unused warn
 	return SIZE_MAX-1;
 }
 
@@ -141,6 +142,8 @@ FORCED(inline) bool _(add)(STRUCT *hp, const TYPENAME e) {
 
 /* it dosn't check if heap is empty so you MUST check it */
 FORCED(inline) TYPENAME _(remove)(STRUCT *hp) {
+
+    assert(!_(is_empty)(hp));
 
 	TYPENAME ret;
 
