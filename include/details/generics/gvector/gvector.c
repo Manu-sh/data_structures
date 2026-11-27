@@ -1,33 +1,38 @@
 /* GVECTOR.C */
 
-#include "../ccommon.c"
+#include "../gcommon.c"
 
+#include <assert.h>
+#include <stddef.h>
+#include <stdint.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdlib.h>
 
 struct STRUCT {
 	TYPENAME *v;
-	int idx;
-	int capacity;
+	size_t idx;
+	size_t capacity; // TODO: bug capacity double every time so... overflow when capacity >= SIZE_MAX
 };
 
 #if 0
 #define ALIGN16(_X_) (((_X_)+(16)) & ~0x0f)
 #endif
 
-FORCED(inline) TYPENAME * _(data)(const STRUCT *vct) { return vct->v; }
-FORCED(inline) bool _(is_empty)(const STRUCT *vct) { return vct->idx == 0; }
-FORCED(inline) int  _(length)(const STRUCT *vct)  { return vct->idx; }
-FORCED(inline) int  _(max_size)() { return INT_MAX; }
-FORCED(inline) void _(clear)(STRUCT *vct) { vct->idx = 0; }
-FORCED(inline) int  _(capacity)(const STRUCT *vct) { return vct->capacity; }
+FORCED(inline) TYPENAME * _(data)(const STRUCT *vct)     { return vct->v;          }
+FORCED(inline) bool       _(is_empty)(const STRUCT *vct) { return vct->idx == 0;   }
+FORCED(inline) size_t     _(length)(const STRUCT *vct)   { return vct->idx;        }
+FORCED(inline) size_t     _(max_size)(const STRUCT *vct) { (void)vct; return (-1); }
+FORCED(inline) void       _(clear)(STRUCT *vct)          { vct->idx = 0;           }
+FORCED(inline) size_t     _(capacity)(const STRUCT *vct) { return vct->capacity;   }
 
 /* vector random access */
-FORCED(inline) TYPENAME _(access)(const STRUCT *vct, int at) { return vct->v[at]; }
-FORCED(inline) void _(assign)(STRUCT *vct, int at, const TYPENAME e) { vct->v[at] = (TYPENAME)e; }
+FORCED(inline) TYPENAME _(access)(const STRUCT *vct, size_t at) { return vct->v[at]; }
+FORCED(inline) void _(assign)(STRUCT *vct, size_t at, const TYPENAME e) { vct->v[at] = CAST_PTR(TYPENAME, e); }
 
-FORCED(inline) bool _(resize)(STRUCT *vct, int len) {
+FORCED(inline) bool _(resize)(STRUCT *vct, size_t len) {
+
+    assert(len <= _(max_size)(vct));
 
 	TYPENAME *nv = (TYPENAME *)realloc(vct->v, len * sizeof(TYPENAME ));
 	if (UNLIKELY(!nv)) return false;
@@ -40,6 +45,8 @@ FORCED(inline) bool _(resize)(STRUCT *vct, int len) {
 }
 
 FORCED(inline) bool _(shrink_to_fit)(STRUCT *vct) {
+    assert(vct->idx + 1 != _(max_size)(vct));
+
 	TYPENAME *nv = (TYPENAME *)realloc(vct->v, (vct->idx+1) * sizeof(TYPENAME ));
 	if (UNLIKELY(!nv)) return false;
     vct->v = nv;
@@ -73,6 +80,8 @@ FORCED(inline) bool _(push_back)(STRUCT *vct, const TYPENAME e) {
 
 	/* doubling-halving: growUp */
 	if (vct->idx >= vct->capacity-1) {
+	    assert(vct->capacity <= _(max_size)(vct) / 2);
+
 		TYPENAME *nv = (TYPENAME *)realloc(vct->v, (vct->capacity*2) * sizeof(TYPENAME ));
 		if (UNLIKELY(!nv)) return false;
 
@@ -84,11 +93,12 @@ FORCED(inline) bool _(push_back)(STRUCT *vct, const TYPENAME e) {
 	return true;
 }
 
-FORCED(inline) bool _(push_back_all)(STRUCT *vct, const TYPENAME *v, int len) {
+FORCED(inline) bool _(push_back_all)(STRUCT *vct, const TYPENAME *v, size_t len) {
 
 	const TYPENAME *end = v+len;
 
 	if (vct->idx+len >= vct->capacity) {
+	    assert(vct->capacity+len <= _(max_size)(vct));
 
 		TYPENAME *nv = (TYPENAME *)realloc(vct->v, (vct->capacity+len) * sizeof(TYPENAME ));
 		if (UNLIKELY(!nv)) return false;
@@ -107,6 +117,8 @@ FORCED(inline) bool _(push_back_all)(STRUCT *vct, const TYPENAME *v, int len) {
 /* it dosn't check if vector is empty so you MUST check it calling vector_isEmpty() */
 FORCED(inline) TYPENAME _(pop_back)(STRUCT *vct) {
 
+    assert(vct->idx > 0);
+
 	TYPENAME ret = vct->v[--vct->idx];
 
 	/* doubling-halving: growDown */
@@ -122,7 +134,7 @@ FORCED(inline) TYPENAME _(pop_back)(STRUCT *vct) {
 }
 
 /* get back the old element */
-FORCED(inline) TYPENAME _(replace)(STRUCT *vct, int at, const TYPENAME e) {
+FORCED(inline) TYPENAME _(replace)(STRUCT *vct, size_t at, const TYPENAME e) {
 	TYPENAME ret = vct->v[at];
 	return (vct->v[at] = (TYPENAME)e), ret;
 }

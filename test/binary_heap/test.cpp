@@ -50,7 +50,7 @@ jmp:
 	}
 
 
-	assert((int)pqueue.size() == pqueue_int_length(hp));
+	assert(pqueue.size() == pqueue_int_length(hp));
 
 	while (!pqueue_int_is_empty(hp)) {
 

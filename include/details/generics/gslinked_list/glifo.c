@@ -1,8 +1,11 @@
 /* GLIFO.C */
-#include "../ccommon.c"
+#include "../gcommon.c"
 
+#include <stddef.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <stdint.h>
+#include <stddef.h>
 #include <stdlib.h>
 #include <assert.h>
 
@@ -15,7 +18,7 @@ struct STRUCT {
 	_(Node) *head; /* point to a preallocated block without data */
 	_(Node) *tail;
 	/* Node *front; front => head.next */
-	int length; /* for obvious reasons the tail isn't count as part of length */
+	size_t length; /* for obvious reasons the tail isn't count as part of length */
 };
 
 /* in the worst case back point to head and that coincide with tail
@@ -24,10 +27,10 @@ so a->front it's a valid blk */
 
 /* TODO test */
 FORCED(inline) TYPENAME _(top)(const STRUCT *ls)      { return ls->head->next->data; }
-FORCED(inline) TYPENAME _(back)(const STRUCT *ls)     { return ls->tail->data;  } /* there is always at least 1 blk */
-FORCED(inline) int      _(length)(const STRUCT *ls)   { return ls->length;      }
-FORCED(inline) bool     _(is_empty)(const STRUCT *ls) { return !ls->head->next; }
-FORCED(inline) int      _(max_size)()                 { return INT_MAX;         }
+FORCED(inline) TYPENAME _(back)(const STRUCT *ls)     { return ls->tail->data;       } /* there is always at least 1 blk */
+FORCED(inline) size_t   _(length)(const STRUCT *ls)   { return ls->length;           }
+FORCED(inline) bool     _(is_empty)(const STRUCT *ls) { return !ls->head->next;      }
+FORCED(inline) size_t   _(max_size)(const STRUCT *ls) { (void)ls; return (-1);       }
 
 FORCED(inline) STRUCT * _(new)() {
 

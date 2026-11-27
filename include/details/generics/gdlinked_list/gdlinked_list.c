@@ -1,8 +1,10 @@
 /* GLINKED_LIST.C */
-#include "../ccommon.c"
+#include "../gcommon.c"
 
+#include <stdint.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdlib.h>
 #include <assert.h>
 
@@ -15,7 +17,7 @@ typedef struct _(node) {
 struct STRUCT {
 	_(Node) *head;
 	_(Node) *tail; /* point to a preallocated block without data */
-	int length; /* for obvious reasons the tail isn't count as part of length */
+	size_t length; /* for obvious reasons the tail isn't count as part of length */
 };
 
 /* b should be an empty node only data field should contain non-null value */
@@ -44,7 +46,7 @@ struct STRUCT {
 	} while(0)                                    \
 
 
-FORCED(inline) int _(maxSize)() { return INT_MAX-1; }
+FORCED(inline) size_t _(maxSize)() { return SIZE_MAX-1; }
 
 FORCED(inline) STRUCT * _(new()) {
 
@@ -76,7 +78,7 @@ FORCED(inline) void _(free)(STRUCT *ls) {
 	free(p), free(ls);
 }
 
-FORCED(inline) int  _(length)(const STRUCT *ls) {
+FORCED(inline) size_t  _(length)(const STRUCT *ls) {
 	return ls->length;
 }
 

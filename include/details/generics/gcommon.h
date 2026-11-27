@@ -1,18 +1,20 @@
-/* the following define is used only by ccommon.c */
-#define CCOMMON_H
+#define GCOMMON_H
+
+/* the following define is used only by gcommon.c */
 
 /* CLASSNAME & TYPENAME MUST BE DEFINED BEFORE INCLUDING THIS HDR
-	example:
-		#define CLASSNAME vector
-		#define TYPEID char_ptr
-		#define TYPENAME char *
+   	example:
+  		#define CLASSNAME vector
+  		#define TYPEID char_ptr
+  		#define TYPENAME char *
 */
 
 /* #pragma once */
 #include <stdbool.h>
+#include <stddef.h>
 
 #if !defined(CLASSNAME) || !defined(TYPENAME) || !defined(TYPEID)
-	#error "you must define CLASSNAME & TYPENAME & TYPEID"
+   	#error "you must define CLASSNAME & TYPENAME & TYPEID"
 #endif
 
 #define EMPTY
@@ -24,6 +26,16 @@
 #define STRUCT    TKPASTE(CLASSNAME, UNDERSCORE, TYPEID) /* example: vector_char */
 typedef struct STRUCT STRUCT;
 
+/*
+il problema qui è che le classi non contemplavano di raggiungere mai realmente la quantità massima di elementi inseribili
+nemmeno sulla capacity, di conseguenza è possibile che vada in overflow usando tipi custom piccoli come uint8_t per le lunghezze
+
+#if !defined(USIZETYPE)
+    #error "you must define CLASSNAME & TYPENAME & TYPEID & USIZETYPE"
+    typedef USIZETYPE _(USIZETYPE); // example: size_t -> vector_char_size_t
+    #define USZT _(USIZETYPE)
+#endif
+*/
 
 #ifndef LIKELY
     #define LIKELY(_EXP_)       __builtin_expect((_EXP_), 1)

@@ -126,6 +126,8 @@ static bool vector_bit_push(vector_bit *self, bool value) {
     /* doubling-halving: growUp */
     if (UNLIKELY(self->bit_idx == self->bit_capacity-1)) { // if (UNLIKELY(self->bit_idx >= self->bit_capacity-1)) {
 
+        assert(self->bit_capacity != UINT64_MAX);
+
         const uint64_t new_byte_capacity = bytes_required(self->bit_capacity * 2); // doubling the bit capacity
         uint8_t *const nv = (uint8_t *)BLK_REALLOC(self->v, new_byte_capacity);
         if (UNLIKELY(!nv)) return false;

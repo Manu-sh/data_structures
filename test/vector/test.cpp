@@ -2,6 +2,7 @@
 
 extern "C" {
 	#include <unistd.h>
+	#define USIZETYPE size_t
 	#include "vector/vector_int.h" /* include vector_int.c directly to allow function inlining */
 }
 
@@ -44,7 +45,7 @@ void check_correctness(const vector<int> &sample) {
 	}
 
 
-	assert((int)pvct.size() == vector_int_length(vct));
+	assert(pvct.size() == vector_int_length(vct));
 
 	while (!vector_int_is_empty(vct)) {
 

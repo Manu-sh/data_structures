@@ -2,9 +2,9 @@
     #error "missing CLASSNAME macro definition"
 #endif
 
-#include "../ccommon.h"
+#include "../gcommon.h"
 
-int _(max_size)();
+size_t _(max_size)(const STRUCT *hp);
 
 /* get a new heap ctx back */
 STRUCT * _(new)(bool (*lt)(TYPENAME,TYPENAME));
@@ -19,7 +19,7 @@ bool _(is_empty)(const STRUCT *hp);
 TYPENAME _(peek)(const STRUCT *hp);
 
 /* number of elements that heap contains */
-int _(length)(const STRUCT *hp);
+size_t _(length)(const STRUCT *hp);
 
 /* add an element */
 bool _(add)(STRUCT *hp, const TYPENAME e);
