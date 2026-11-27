@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdlib.h>
 #include <assert.h>
 

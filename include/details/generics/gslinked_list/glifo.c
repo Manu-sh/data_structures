@@ -1,9 +1,11 @@
 /* GLIFO.C */
 #include "../gcommon.c"
 
+#include <cstddef>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <stddef.h>
 #include <stdlib.h>
 #include <assert.h>
 
@@ -16,7 +18,7 @@ struct STRUCT {
 	_(Node) *head; /* point to a preallocated block without data */
 	_(Node) *tail;
 	/* Node *front; front => head.next */
-	int length; /* for obvious reasons the tail isn't count as part of length */
+	size_t length; /* for obvious reasons the tail isn't count as part of length */
 };
 
 /* in the worst case back point to head and that coincide with tail
@@ -28,7 +30,7 @@ FORCED(inline) TYPENAME _(top)(const STRUCT *ls)      { return ls->head->next->d
 FORCED(inline) TYPENAME _(back)(const STRUCT *ls)     { return ls->tail->data;  } /* there is always at least 1 blk */
 FORCED(inline) size_t   _(length)(const STRUCT *ls)   { return ls->length;      }
 FORCED(inline) bool     _(is_empty)(const STRUCT *ls) { return !ls->head->next; }
-FORCED(inline) size_t   _(max_size)()                 { return SIZE_MAX;        }
+FORCED(inline) size_t   _(max_size)()                 { return (-1);            }
 
 FORCED(inline) STRUCT * _(new)() {
 

@@ -3,7 +3,6 @@
 #include "../gcommon.c"
 
 #include <assert.h>
-#include <cstddef>
 #include <stddef.h>
 #include <stdint.h>
 #include <limits.h>
@@ -23,7 +22,7 @@ struct STRUCT {
 FORCED(inline) TYPENAME * _(data)(const STRUCT *vct)     { return vct->v;        }
 FORCED(inline) bool       _(is_empty)(const STRUCT *vct) { return vct->idx == 0; }
 FORCED(inline) size_t     _(length)(const STRUCT *vct)   { return vct->idx;      }
-FORCED(inline) size_t     _(max_size)()                  { return (-1);      }
+FORCED(inline) size_t     _(max_size)()                  { return (-1);          }
 FORCED(inline) void       _(clear)(STRUCT *vct)          { vct->idx = 0;         }
 FORCED(inline) size_t     _(capacity)(const STRUCT *vct) { return vct->capacity; }
 
