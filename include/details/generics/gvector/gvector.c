@@ -3,6 +3,8 @@
 #include "../gcommon.c"
 
 #include <assert.h>
+#include <cstddef>
+#include <stddef.h>
 #include <stdint.h>
 #include <limits.h>
 #include <stdbool.h>
@@ -30,6 +32,8 @@ FORCED(inline) TYPENAME _(access)(const STRUCT *vct, size_t at) { return vct->v[
 FORCED(inline) void _(assign)(STRUCT *vct, size_t at, const TYPENAME e) { vct->v[at] = CAST_PTR(TYPENAME, e); }
 
 FORCED(inline) bool _(resize)(STRUCT *vct, size_t len) {
+
+    assert(len <= _(max_size)());
 
 	TYPENAME *nv = (TYPENAME *)realloc(vct->v, len * sizeof(TYPENAME ));
 	if (UNLIKELY(!nv)) return false;
